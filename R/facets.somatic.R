@@ -157,7 +157,14 @@ facets.somatic <- function(arg_line = NA){
   #### QC ####
 
   QC <- qc(maf, cncf)
-  write.tab(QC, file.path(outdir, "FACETS_QC_summary.txt"))
+  write.tab(QC, file.path(outdir, "QC_summary.txt"))
+
+
+  #### CNA SUMMARY ####
+
+  cna_summary <- cna_summary(maf, cncf)
+  write.tab(cna_summary, file.path(outdir, "cna_summary.txt"))
+
 
   #### MUT STATUS ####
 
@@ -165,6 +172,5 @@ facets.somatic <- function(arg_line = NA){
   gene_mut_cna <- merge(gene_level_calls, mut_status, all.x = T)
   gene_mut_cna[is.na(mutation_category), mutation_category := "wt"]
   write.tab(gene_mut_cna, file.path(outdir, "gene_mut_cna.txt"))
-
 
 }
