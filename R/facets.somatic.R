@@ -95,6 +95,7 @@ facets.somatic <- function(arg_line = NA){
     setkey(gene_targets, chr, start, end)
   }
 
+
   #### CNCF ####
 
   cncf <- generate_cncf_file(s2c)
@@ -153,8 +154,15 @@ facets.somatic <- function(arg_line = NA){
   write.tab(maf, file.path(outdir, "mafAnno.maf"))
 
 
+  #### QC ####
+
+  QC <- qc(maf, cncf)
+  write.tab(QC, file.path(outdir, "FACETS_QC_summary.txt"))
+
   #### MUT STATUS ####
 
   mut_status <- maf_to_mut_status(maf, genes = genes)
   write.tab(mut_status, file.path(outdir, "mut_status.txt"))
+
+
 }

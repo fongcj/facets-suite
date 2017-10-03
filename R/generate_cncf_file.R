@@ -88,8 +88,3 @@ generate_log_tcn_seg <- function(cncf){
 }
 
 
-generate_cncf_QC <- function(cncf){
-  QC <- cncf[, .(n.dip.seg = .SD[tcn == 2 & lcn == 1, .N]),
-             keyby = Tumor_Sample_Barcode]
-  QC
-}
