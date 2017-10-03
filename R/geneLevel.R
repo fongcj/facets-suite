@@ -55,6 +55,7 @@ get_gene_level_calls <- function(cncf,
                           list(chr = unique(chr),
                                seg.start=unique(loc.start),
                                seg.end=unique(loc.end),
+                               cnlr.median = unique(cnlr.median),
                                #                                start=unique(start),   ### with these uncommented, the per-gene summarization is broken (??)
                                #                                end=unique(end),
                                frac_elev_major_cn=unique(frac_elev_major_cn),
