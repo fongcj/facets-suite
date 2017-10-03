@@ -52,17 +52,29 @@ generate_cncf_file <- function(samples){
   out_table[, loglik := as.numeric(loglik)]
 
   cncf_out <- merge(cncf, out_table, by = "Tumor_Sample_Barcode", all = T, allow.cartesian=TRUE)
-
-  setnames(cncf_out, "tcn", "tcn.cncf")
-  setnames(cncf_out, "lcn", "lcn.cncf")
-  setnames(cncf_out, "cf", "cf.cncf")
-  cncf_out[,`:=`(tcn = tcn.em,
-                 lcn = lcn.em,
-                 cf = cf.em)]
-  cncf_out
 }
 
-generate_seg <- function(cncf){
+generate_logR_seg <- function(cncf){
+  cncf[, .(
+    ID = Tumor_Sample_Barcode,
+    chrom,
+    loc.start,
+    loc.end,
+    num.mark,
+    seg.mean = cnlr.median)]
+}
+
+generate_logR_adj_seg <- function(cncf){
+  cncf[, .(
+    ID = Tumor_Sample_Barcode,
+    chrom,
+    loc.start,
+    loc.end,
+    num.mark,
+    seg.mean = cnlr.median - dipLogR)]
+}
+
+generate_log_tcn_seg <- function(cncf){
   cncf[, .(
     ID = Tumor_Sample_Barcode,
     chrom,

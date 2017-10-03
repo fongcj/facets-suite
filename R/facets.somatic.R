@@ -36,6 +36,9 @@ facets.somatic <- function(arg_line = NA){
     optparse::make_option(c("-s", "--samplefile"),
                           type="character", default="samples.txt",
                           help="sample file"),
+    optparse::make_option(c("-m", "--maf"),
+                          type="character", default="samples.maf",
+                          help="maf file"),
     optparse::make_option(c("-o", "--outdir"),
                           type="character", default=NA,
                           help="output directory"),
@@ -63,6 +66,7 @@ facets.somatic <- function(arg_line = NA){
 
   dir.create(outdir, showWarnings = FALSE, recursive = TRUE)
 
+  maf <- suppressWarnings(fread(opts$options$maf))
   s2c <- suppressWarnings(fread(samplefile))
 
   original_directory <- getwd()
@@ -76,10 +80,13 @@ facets.somatic <- function(arg_line = NA){
 
   if (targetFile == "IMPACT341") {
     gene_targets = facets.somatic::IMPACT341_targets
+    genes = facets.somatic::msk_impact_341
   } else if (targetFile == "IMPACT410") {
     gene_targets = facets.somatic::IMPACT410_targets
+    genes = facets.somatic::msk_impact_410
   } else if (targetFile == "IMPACT468") {
     gene_targets = facets.somatic::IMPACT468_targets
+    genes = facets.somatic::msk_impact_468
   } else {
     # Note the target file needs to not only be in the PICARD interval list format
     # But the names must match the regex: /GENESYMBOL_.*/ (e.g. TP53_target_02)
@@ -88,15 +95,66 @@ facets.somatic <- function(arg_line = NA){
     setkey(gene_targets, chr, start, end)
   }
 
+  #### CNCF ####
+
   cncf <- generate_cncf_file(s2c)
+  setnames(cncf, "tcn", "tcn.cncf")
+  setnames(cncf, "lcn", "lcn.cncf")
+  setnames(cncf, "cf", "cf.cncf")
+  cncf[,`:=`(tcn = tcn.em,
+             lcn = lcn.em,
+             cf = cf.em)]
   write.tab(cncf, file.path(outdir, "cncf.txt"))
 
-  seg <- generate_seg(cncf)
-  write.tab(seg, file.path(outdir, "cncf.seg"))
+
+  #### SEG ####
+
+  seg <- generate_logR_seg(cncf)
+  write.tab(seg, file.path(outdir, "logR.seg"))
+  seg <- generate_logR_adj_seg(cncf)
+  write.tab(seg, file.path(outdir, "logR_adj.seg"))
+  seg <- generate_log_tcn_seg(cncf)
+  write.tab(seg, file.path(outdir, "log_tcn.seg"))
+
+
+  #### ARM LEVEL ####
 
   arm_level_calls = get_arm_level_calls(cncf)
   write.tab(arm_level_calls, file.path(outdir, "armLevel.txt"))
 
+
+  #### GENE LEVEL ####
+
   gene_level_calls = get_gene_level_calls(cncf, gene_targets = gene_targets)
   write.tab(gene_level_calls, file.path(outdir, "geneLevel.txt"))
+
+
+  #### MAF ANNO ####
+
+  maf = annotate_maf_with_facets_cf_tcn_lcn_cncf(maf, cncf)
+
+  maf[,t_alt_count := as.numeric(t_alt_count)]
+  maf[,t_ref_count := as.numeric(t_ref_count)]
+  maf[, paste0("ccf_Mcopies",
+               c("", "_lower", "_upper", "_prob95", "_prob90")) :=
+        ccf.likelihood(purity,
+                       tcn,
+                       t_alt_count,
+                       (t_alt_count + t_ref_count),
+                       copies=(tcn-lcn)), by= 1:nrow(maf)]
+
+  maf[, paste0("ccf_1copy",
+               c("", "_lower", "_upper", "_prob95", "_prob90")) :=
+        ccf.likelihood(purity,
+                       tcn,
+                       t_alt_count,
+                       (t_alt_count + t_ref_count),
+                       copies=1), by= 1:nrow(maf)]
+  write.tab(maf, file.path(outdir, "mafAnno.maf"))
+
+
+  #### MUT STATUS ####
+
+  mut_status <- maf_to_mut_status(maf, genes = genes)
+  write.tab(mut_status, file.path(outdir, "mut_status.txt"))
 }
