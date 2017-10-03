@@ -2,4 +2,4 @@
 .Rproj.user
 .Rhistory
 .RData
-inst/example_data/example_output
+inst/example_data/example_output/*
