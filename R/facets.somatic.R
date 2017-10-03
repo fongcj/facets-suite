@@ -96,6 +96,12 @@ facets.somatic <- function(arg_line = NA){
   }
 
 
+  #### CNCF FILES EXIST ####
+
+  s2c[, cncf_exists := file.exists(cncf)]
+  s2c <- s2c[cncf_exists == TRUE]
+  write.tab(s2c, file.path(outdir, "samples.txt"))
+
   #### CNCF ####
 
   cncf <- generate_cncf_file(s2c)
