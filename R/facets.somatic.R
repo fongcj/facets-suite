@@ -161,8 +161,9 @@ facets.somatic <- function(arg_line = NA){
 
   #### MUT STATUS ####
 
-  mut_status <- maf_to_mut_status(maf, genes = genes)
-  write.tab(mut_status, file.path(outdir, "mut_status.txt"))
+  mut_status <- maf_to_mut_status_long(maf = maf)
+  gene_mut_cna <- merge(gene_level_calls, mut_status, all.x = T)
+  write.tab(gene_mut_cna, file.path(outdir, "gene_mut_cna.txt"))
 
 
 }

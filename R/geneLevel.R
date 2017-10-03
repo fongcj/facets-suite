@@ -94,5 +94,5 @@ get_gene_level_calls <- function(cncf,
   gene_level[, FACETS_CNA := factor(FACETS_CNA, levels = c(-2:2))]
   gene_level[, chr := factor(chr, levels = c(1:22, "X", "Y"))]
   setkey(gene_level, Tumor_Sample_Barcode, Hugo_Symbol)
-  gene_level
+  copy(gene_level)
 }
