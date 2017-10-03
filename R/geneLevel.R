@@ -96,39 +96,3 @@ get_gene_level_calls <- function(cncf,
   setkey(gene_level, Tumor_Sample_Barcode, Hugo_Symbol)
   gene_level
 }
-
-#####################################################################################
-#####################################################################################
-
-
-geneLevel <- function(){
-
-  parser = ArgumentParser()
-  parser$add_argument('-f', '--filenames', type='character', nargs='+', help='list of filenames to be processed.')
-  parser$add_argument('-o', '--outfile', type='character', help='Output filename.')
-  parser$add_argument('-t', '--targetFile', type='character', default='IMPACT468', help="IMPACT341/410/468, or a Picard interval list file of gene target coordinates [default IMPACT468]")
-  args=parser$parse_args()
-
-  filenames = args$filenames
-  outfile = args$outfile
-  # method = args$method
-
-  if (args$targetFile == "IMPACT341") {
-    geneTargets = facets.somatic::IMPACT341_targets
-  } else if (args$targetFile == "IMPACT410") {
-    geneTargets = facets.somatic::IMPACT410_targets
-  } else if (args$targetFile == "IMPACT468") {
-    geneTargets = facets.somatic::IMPACT468_targets
-  } else {
-    # Note the target file needs to not only be in the PICARD interval list format
-    # But the names must match the regex: /GENESYMBOL_.*/ (e.g. TP53_target_02)
-    geneTargets <-
-      suppressWarnings(fread(paste0('grep -v "^@" ', args$targetFile)))
-    setnames(geneTargets, c("chr", "start", "end", "strand", "name"))
-    setkey(geneTargets, chr, start, end)
-  }
-
-  gene_level_calls = get_gene_level_calls(filenames, geneTargets)
-  write.text(gene_level_calls, outfile)
-
-}

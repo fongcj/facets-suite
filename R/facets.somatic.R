@@ -91,6 +91,9 @@ facets.somatic <- function(arg_line = NA){
   cncf <- generate_cncf_file(s2c)
   write.tab(cncf, file.path(outdir, "cncf.txt"))
 
+  seg <- generate_seg(cncf)
+  write.tab(seg, file.path(outdir, "cncf.seg"))
+
   arm_level_calls = get_arm_level_calls(cncf)
   write.tab(arm_level_calls, file.path(outdir, "armLevel.txt"))
 
