@@ -163,6 +163,7 @@ facets.somatic <- function(arg_line = NA){
 
   mut_status <- maf_to_mut_status_long(maf = maf)
   gene_mut_cna <- merge(gene_level_calls, mut_status, all.x = T)
+  gene_mut_cna[is.na(mutation_category), mutation_category := "wt"]
   write.tab(gene_mut_cna, file.path(outdir, "gene_mut_cna.txt"))
 
 
