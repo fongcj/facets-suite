@@ -42,6 +42,9 @@ facets.somatic <- function(arg_line = NA){
     optparse::make_option(c("-o", "--outdir"),
                           type="character", default=NA,
                           help="output directory"),
+    optparse::make_option(c("-n", "--n_threads"),
+                          type="integer", default=1,
+                          help="number of threads"),
     optparse::make_option(c('-t', '--targetFile'),
                           type='character', default='IMPACT468',
                           help="IMPACT341/410/468, or a Picard interval list file of gene target coordinates [default IMPACT468]")
@@ -60,6 +63,8 @@ facets.somatic <- function(arg_line = NA){
     positional_arguments = TRUE
   )
 
+  options(mc.cores = opts$options$n_threads)
+  
   samplefile <- opts$options$samplefile
   outdir <- opts$options$outdir
   targetFile <- opts$options$targetFile
@@ -138,7 +143,7 @@ facets.somatic <- function(arg_line = NA){
 
   #### MAF ANNO ####
 
-  maf = annotate_maf_with_facets_cf_tcn_lcn_cncf(maf, cncf)
+  maf = annotate_maf_with_facets_cf_tcn_lcn_cncf_mc(maf, cncf)
 
   maf[,t_alt_count := as.numeric(t_alt_count)]
   maf[,t_ref_count := as.numeric(t_ref_count)]

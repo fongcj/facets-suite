@@ -102,6 +102,67 @@ annotate_maf_with_facets_cf_tcn_lcn_cncf = function(maf, cncf){
 ################################################################################################################################
 ################################################################################################################################
 
+annotate_maf_with_facets_cf_tcn_lcn_cncf_mc = function(maf, cncf){
+  
+  maf = as.data.table(maf)
+  maf_cols = colnames(maf)
+
+  cncf_remove_names <- c("ID", "seg", "num.mark", "nhet", "mafR", "segclust", 
+    "cnlr.median.clust", "mafR.clust", "start", "end", "cf.em", "tcn.em", 
+    "lcn.em", "cf.cncf", "tcn.cncf", "lcn.cncf", "dipt", "loglik")
+  cncf <- cncf[, setdiff(names(cncf), cncf_remove_names), with = F]
+  
+    ### check for duplicate columns
+  if(any(duplicated(names(maf)))){
+    warning("duplicate columns removed from maf file")
+    maf[, which(duplicated(names(maf))) := NULL, with = F]
+  }
+  
+  ids <- sort(intersect(maf$Tumor_Sample_Barcode, cncf$Tumor_Sample_Barcode))
+  maf <- maf[Tumor_Sample_Barcode %in% ids]
+  cncf <- cncf[Tumor_Sample_Barcode %in% ids]
+  
+  maf_list <- lapply(
+    ids, function(id) {
+      sample_maf <- maf[Tumor_Sample_Barcode == id]
+      sample_maf[, Chromosome := factor(as.character(Chromosome))]
+      setkey(sample_maf,
+             Chromosome,
+             Start_Position,
+             End_Position)
+      sample_maf
+    })
+  cncf_list <- lapply(
+    ids, 
+    function(id){
+      sample_cncf <- cncf[Tumor_Sample_Barcode == id]
+      sample_cncf[, chrom := factor(as.character(chrom))]
+      sample_cncf[chrom == 23, chrom := "X"]
+      sample_cncf[, Tumor_Sample_Barcode := NULL]
+      setkey(sample_cncf,
+             chrom,
+             loc.start,
+             loc.end)
+      sample_cncf
+    })
+  
+  maf_ann = rbindlist(parallel::mcmapply(
+    foverlaps,
+    x = maf_list,
+    y = cncf_list,
+    MoreArgs = list(mult = "first", nomatch = NA),
+    SIMPLIFY = F
+  ))
+
+  setcolorder(maf_ann, c(maf_cols, setdiff(names(maf_ann), maf_cols)))
+  copy(maf_ann)
+  #maf_ann[,c(maf_cols, 'dipLogR', 'seg.mean', 'cf', 'tcn', 'lcn', 'purity', 'ploidy'), with=F]
+}
+
+
+################################################################################################################################
+################################################################################################################################
+
 ccf.likelihood = function(purity, absCN, alt_allele, coverage, copies){
 
   #From McGranahan_and_Swanton_2015
