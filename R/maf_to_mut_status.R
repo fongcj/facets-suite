@@ -1,24 +1,24 @@
 # maf_to_mut_status <- function(maf, genes = c("KRAS", "TP53", "SMAD4", "CDKN2A", "SF3B1", "U2AF1")){
 #   maf[, Tumor_Sample_Barcode := factor(Tumor_Sample_Barcode)]
-#   maf <- maf[Consequence %in% facets.somatic::Nonsyn_Consequences & Hugo_Symbol %in% genes]
+#   maf <- maf[Consequence %in% facets.suite::Nonsyn_Consequences & Hugo_Symbol %in% genes]
 #   maf[, Hugo_Symbol := factor(Hugo_Symbol, levels = genes)]
 #
 #   maf[, mutation_category := ifelse(!is.na(stringr::str_match(
 #     Consequence,
 #     paste(collapse="|",
-#           facets.somatic::Trunc_Consequences))), "truncating",
-#     ifelse(tm %in% facets.somatic::hotspots_24k, "hotspot",
+#           facets.suite::Trunc_Consequences))), "truncating",
+#     ifelse(tm %in% facets.suite::hotspots_24k, "hotspot",
 #            ifelse(!is.na(stringr::str_match(
 #              Consequence,
 #              paste(collapse="|",
-#                    facets.somatic::Inframe_Consequences))), "inframe",
+#                    facets.suite::Inframe_Consequences))), "inframe",
 #              ifelse(Consequence %like% "missense_variant", "missense",
 #                     "other")
 #            )))
 #     ]
 #
 #   dc <- dcast.data.table(
-#     maf[Consequence %in% facets.somatic::Nonsyn_Consequences &
+#     maf[Consequence %in% facets.suite::Nonsyn_Consequences &
 #           Hugo_Symbol %in% genes],
 #     Tumor_Sample_Barcode ~ Hugo_Symbol,
 #     value.var = "mutation_category",
@@ -47,12 +47,12 @@ choose_mutation_category_mutation <- function(Hugo_Symbol, HGVSp_Short, Conseque
     ifelse(!is.na(stringr::str_match(
       Consequence,
       paste(collapse="|",
-            facets.somatic::Trunc_Consequences))), "truncating",
-      ifelse(tm %in% facets.somatic::hotspots_24k, "hotspot",
+            facets.suite::Trunc_Consequences))), "truncating",
+      ifelse(tm %in% facets.suite::hotspots_24k, "hotspot",
              ifelse(!is.na(stringr::str_match(
                Consequence,
                paste(collapse="|",
-                     facets.somatic::Inframe_Consequences))), "inframe",
+                     facets.suite::Inframe_Consequences))), "inframe",
                ifelse(Consequence %like% "missense_variant", "missense",
                       "other")
              )))

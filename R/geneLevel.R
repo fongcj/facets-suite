@@ -14,7 +14,7 @@ annotate_integer_copy_number <- function(gene_level, amp_threshold = 5){
   if("FACETS_CNA" %in% names(gene_level)) gene_level[, FACETS_CNA := NULL]
   if("FACETS_CALL" %in% names(gene_level)) gene_level[, FACETS_CALL := NULL]
 
-  gene_level <- merge(gene_level, facets.somatic::FACETS_CALL_table, sort = F, all.x = T)
+  gene_level <- merge(gene_level, facets.suite::FACETS_CALL_table, sort = F, all.x = T)
 
   gene_level[tcn >= AMP_thresh_tcn, FACETS_CNA := 2]
   gene_level[tcn >= AMP_thresh_tcn, FACETS_CALL := "AMP"]

@@ -22,7 +22,7 @@ get_arm_level_calls <- function(cncf,
       ),
     by=Tumor_Sample_Barcode]
 
-  arm_definitions <- facets.somatic::arm_definitions
+  arm_definitions <- facets.suite::arm_definitions
   ### Extract integer copy number for each probe from cncf
   fo_impact <- foverlaps(arm_definitions, cncf, nomatch=NA)
   ### Truncate segments that span two arms

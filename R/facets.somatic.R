@@ -20,7 +20,7 @@ fread_rbind <- function(filenames, fn = fread){
 #' @param arg_line
 #' @import data.table
 #' @export
-facets.somatic <- function(arg_line = NA){
+facets.suite <- function(arg_line = NA){
 
   ### process args
   if(!is.na(arg_line) | interactive()) {
@@ -84,14 +84,14 @@ facets.somatic <- function(arg_line = NA){
   setwd(original_directory)
 
   if (targetFile == "IMPACT341") {
-    gene_targets = facets.somatic::IMPACT341_targets
-    genes = facets.somatic::msk_impact_341
+    gene_targets = facets.suite::IMPACT341_targets
+    genes = facets.suite::msk_impact_341
   } else if (targetFile == "IMPACT410") {
-    gene_targets = facets.somatic::IMPACT410_targets
-    genes = facets.somatic::msk_impact_410
+    gene_targets = facets.suite::IMPACT410_targets
+    genes = facets.suite::msk_impact_410
   } else if (targetFile == "IMPACT468") {
-    gene_targets = facets.somatic::IMPACT468_targets
-    genes = facets.somatic::msk_impact_468
+    gene_targets = facets.suite::IMPACT468_targets
+    genes = facets.suite::msk_impact_468
   } else {
     # Note the target file needs to not only be in the PICARD interval list format
     # But the names must match the regex: /GENESYMBOL_.*/ (e.g. TP53_target_02)
