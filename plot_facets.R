@@ -1,4 +1,4 @@
-#!/opt/common/CentOS_6-dev/R/R-3.2.2/bin/Rscript
+
 
 library(ggplot2)
 library(Cairo)

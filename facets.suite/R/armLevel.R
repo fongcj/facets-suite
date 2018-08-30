@@ -1,48 +1,30 @@
-#!/opt/common/CentOS_6-dev/R/R-3.1.3/bin/Rscript
 
 #### usage ./get_gene_level_calls.R output_file.txt *_cncf.txt
 
-library(argparse)
-library(data.table)
+#' @import data.table
 
 
-write.text <- function (...) {
-  write.table(..., quote = F, col.names = T, row.names = F,
-              sep = "\t")
-}
-
-getSDIR <- function(){
-  args=commandArgs(trailing=F)
-  TAG="--file="
-  path_idx=grep(TAG,args)
-  SDIR=dirname(substr(args[path_idx],nchar(TAG)+1,nchar(args[path_idx])))
-  if(length(SDIR)==0) {
-    return(getwd())
-  } else {
-    return(SDIR)
-  }
-}
-
-### get IMPACT341 loci and gene names
-arm_definitions <- suppressWarnings(fread(file.path(getSDIR(), 'CytobandTableRed.Ensemblgrch37.txt')))
-setnames(arm_definitions, c("chr", "start", "end", "arm"))
-arm_definitions <- arm_definitions[chr != "Y"]
-arm_definitions[, arm := factor(arm, levels = unique(arm))]
-arm_definitions[, chr := factor(chr, levels = unique(chr))]
-setkey(arm_definitions, chr, start, end)
+#' @name annotate_integer_copy_number
+#' @title don't know
+#' @description
+#'
+#' don't know
+#'
+#' @param gene_level numeric first argument
+#' @param AMP_thresh_tcn numeric first argument
+#' @return don't know
+annotate_integer_copy_number = function(gene_level, AMP_thresh_tcn=6){
 
 
-#############################################
-### definition of copy number calls in WGD
-FACETS_CALL_table <- fread(paste0(getSDIR(), "/FACETS_CALL_table.tsv"))
-setkey(FACETS_CALL_table, WGD, mcn, lcn)
-### lowest value of tcn for AMP
-AMP_thresh_tcn <- 6
-#############################################
+  #############################################
+  ### definition of copy number calls in WGD
+  FACETS_CALL_table = fread(system.file("extdata", "FACETS_CALL_table.tsv", package = "facets.suite"))
+  setkey(FACETS_CALL_table, WGD, mcn, lcn)
+  ### lowest value of tcn for AMP
+  ## AMP_thresh_tcn <- 6
+  #############################################
 
 
-
-annotate_integer_copy_number <- function(gene_level){
   ### Portal/TCGA copy number calls as well as
   ### more advanced copy number calling, including CNLOH etc.
 
@@ -64,15 +46,38 @@ annotate_integer_copy_number <- function(gene_level){
   setcolorder(gene_level, output_cols)
   setkeyv(gene_level, input_key)
   gene_level
+
 }
 
+
+#' @name get_gene_level_calls
+#' @title don't know
+#' @description
+#'
+#' don't know
+#'
+#' @param cncf_files numeric first argument
+#' @param method numeric first argument
+#' @param WGD_threshold numeric first argument
+#' @param amp_threshold numeric first argument
+#' @param mean_chrom_threshold numeric first argument
+#' @param fun.rename numeric first argument
+#' @return don't know
 get_gene_level_calls <- function(cncf_files,
                                  method,
                                  WGD_threshold = 0.5, ### least value of frac_elev_major_cn for WGD
                                  amp_threshold = 5, ### total copy number greater than this value for an amplification
                                  mean_chrom_threshold = 0, ### total copy number also greater than this value multiplied by the chromosome mean for an amplification
-                                 fun.rename = function(filename){filename}
-){
+                                 fun.rename = function(filename){filename}){
+
+  ### get IMPACT341 loci and gene names
+  arm_definitions = suppressWarnings(fread(system.file("extdata", "CytobandTableRed.Ensemblgrch37.txt", package = "facets.suite")))
+  setnames(arm_definitions, c("chr", "start", "end", "arm"))
+  arm_definitions <- arm_definitions[chr != "Y"]
+  arm_definitions[, arm := factor(arm, levels = unique(arm))]
+  arm_definitions[, chr := factor(chr, levels = unique(chr))]
+  setkey(arm_definitions, chr, start, end)
+
 
   ### check version of data.table
   if(packageVersion("data.table") < "1.9.6"){
@@ -92,7 +97,7 @@ get_gene_level_calls <- function(cncf_files,
   concat_cncf_txt[chrom == "23", chrom := "X"]
   setkey(concat_cncf_txt, chrom, loc.start, loc.end)
 
-  if (!("tcn" %in% names(concat_cncf_txt))) {
+  if (!("tcn" %in% names(concat_cncf_txt))){
     concat_cncf_txt[, c("tcn", "lcn") := list(tcn.em, lcn.em)]
   }
 
@@ -123,6 +128,7 @@ get_gene_level_calls <- function(cncf_files,
                           by=list(Tumor_Sample_Barcode, arm, tcn=tcn, lcn=lcn)]
 
   }
+
   if(method == 'em'){
 
       gene_level <- fo_impact[,
@@ -154,8 +160,8 @@ get_gene_level_calls <- function(cncf_files,
   ### the lower value is chosen on the basis that a
   ### partial deletion is a deletion but a
   ### partial amplification is not an amplification
-#   gene_level <- gene_level[order(FACETS_CNA, -Nprobes)]
-#   gene_level <- gene_level[!duplicated(gene_level, by=c("Tumor_Sample_Barcode", "Hugo_Symbol"))]
+  #   gene_level <- gene_level[order(FACETS_CNA, -Nprobes)]
+  #   gene_level <- gene_level[!duplicated(gene_level, by=c("Tumor_Sample_Barcode", "Hugo_Symbol"))]
 
   gene_level <- gene_level[order(Tumor_Sample_Barcode, arm, -arm_frac)]
   gene_level[,primary := as.integer(!duplicated(gene_level, by=c("Tumor_Sample_Barcode", "arm")))]
@@ -172,27 +178,47 @@ get_gene_level_calls <- function(cncf_files,
   gene_level
 }
 
-#####################################################################################
-#####################################################################################
 
 
-if(!interactive()){
+#' @name armLevel_main_function
+#' @title don't know
+#' @description
+#'
+#' temporary function
+#'
+#' @param filename character vector of filenames to be processed
+#' @param outfile character Output filename
+#' @param method character Method used to calculate integer copy number. Allowed values cncf or em
+#' @return don't know
+armLevel_main_function = function(filename, outfile, method){
 
-  parser = ArgumentParser()
-  parser$add_argument('-f', '--filenames', type='character', nargs='+', help='list of filenames to be processed.')
-  parser$add_argument('-o', '--outfile', type='character', help='Output filename.')
-  parser$add_argument('-m', '--method', type='character', default='cncf', help='Method used to calculate integer copy number. Allowed values cncf or em')
-
-  args=parser$parse_args()
-
-  filenames = args$filenames
-  outfile = args$outfile
-  method = args$method
-  
-  #### usage ./get_gene_level_calls.R output_file.txt *_cncf.txt
-  gene_level_calls = get_gene_level_calls(filenames, method)
-  write.text(gene_level_calls, outfile)
+    write.text <- function(...){
+        write.table(..., quote = FALSE, col.names = TRUE, row.names = FALSE, sep = "\t")
+    }
+    #### usage ./get_gene_level_calls.R output_file.txt *_cncf.txt
+    gene_level_calls = get_gene_level_calls(filename, method)
+    write.text(gene_level_calls, outfile)
 }
+
+## 
+## if(!interactive()){
+## 
+##   parser = ArgumentParser()
+##   parser$add_argument('-f', '--filenames', type='character', nargs='+', help='list of filenames to be processed.')
+##   parser$add_argument('-o', '--outfile', type='character', help='Output filename.')
+##   parser$add_argument('-m', '--method', type='character', default='cncf', help='Method used to calculate integer copy number. Allowed values cncf or em')
+## 
+##   args=parser$parse_args()
+## 
+##   filenames = args$filenames
+##   outfile = args$outfile
+##   method = args$method
+##   
+##   #### usage ./get_gene_level_calls.R output_file.txt *_cncf.txt
+##   gene_level_calls = get_gene_level_calls(filenames, method)
+##   write.text(gene_level_calls, outfile)
+## }
+## 
 
 
 
