@@ -1,5 +1,16 @@
-plotSampleCNCF.custom<-function (jointseg, out, fit,main="")
-{
+
+#' @name plotSampleCNCF.custom
+#' @title don't know
+#' @description
+#'
+#' don't know
+#'
+#' @param jointseg numeric first argument
+#' @param out numeric first argument
+#' @param fit numeric first argument
+#' @param main numeric first argument
+#' @return don't know
+plotSampleCNCF.custom = function(jointseg, out, fit, main=""){
     mat = jointseg
     mat = subset(mat, chrom < 23)
     out = subset(out, chrom < 23) #from chr to chrom

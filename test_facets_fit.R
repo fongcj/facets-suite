@@ -10,15 +10,15 @@
 
 '%!in%' <- function(x,y)!('%in%'(x,y))
 
-catverbose <- function(...) {
-  cat(format(Sys.time(), "%Y%m%d %H:%M:%S |"), ..., "\n")
+catverbose <- function(...){
+    cat(format(Sys.time(), "%Y%m%d %H:%M:%S |"), ..., "\n")
 }
 
-monotonic <- function(x) {
-  all(x == cummax(x))
+monotonic <- function(x){
+    all(x == cummax(x))
 }
 
-plot_vaf_by_cn_state <- function(maf, sample, purity, wgd=F) {
+plot_vaf_by_cn_state <- function(maf, sample, purity, wgd=F){
   maf.tmp <- maf[lcn == mcn]
   gg <- ggplot(maf.tmp, aes(x = VAF)) + 
     geom_histogram(col = "black", fill="#41B6C4", lwd = 1.5, binwidth = 0.02) +
@@ -45,7 +45,7 @@ plot_vaf_by_cn_state <- function(maf, sample, purity, wgd=F) {
   plot(gg)
 }
 
-main <- function(maf, facets, plot=F) {
+main <- function(maf, facets, plot=F){
   
   summary <- c()
   samples <- unique(maf$Tumor_Sample_Barcode)

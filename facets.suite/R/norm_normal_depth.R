@@ -1,4 +1,4 @@
-#!/opt/common/CentOS_6-dev/R/R-3.1.3/bin/Rscript
+
 ### Reads a counts.dat.gz FACETS input file and 
 ### returns counts.norm_normal_depth.dat.gz.
 ###
@@ -18,12 +18,19 @@
 ### Alex Penson <pensona@mskcc.org>
 ###
 
-
-library(data.table)
-
+#' @import data.table
 
 
-normalize_facets_depth <- function(filename, out_filename){
+#' @name normalize_facets_depth
+#' @title don't know
+#' @description
+#'
+#' don't know
+#'
+#' @param filename numeric first argument
+#' @param out_filename numeric first argument
+#' @return don't know
+normalize_facets_depth = function(filename, out_filename){
   countsMerged <- suppressWarnings(fread(paste0('gunzip --stdout ', filename), showProgress = FALSE))
   countsMerged$Chromosome <- factor(countsMerged$Chromosome, levels=c(1:22, "X", "Y"))
   countsMerged[, File1DP := File1R + File1A]
@@ -37,8 +44,7 @@ normalize_facets_depth <- function(filename, out_filename){
                         File2DP,
                         M=log2(File1DP), 
                         A=log2(File2DP/File1DP)
-                      )
-]
+                      )]
 
   
   lx <- with(dt, lowess(M, A)) ### variables in "MA plot"
@@ -76,9 +82,9 @@ normalize_facets_depth <- function(filename, out_filename){
 ###  system(paste0("gzip -f ", output_filename))
 }
 
-if(!interactive()){
-  args <- commandArgs(TRUE)
-  filename <- args[[1]]; args <- args[-1]
-  out_filename <- args[[1]]; args <- args[-1]
-  normalize_facets_depth(filename, out_filename)
-}
+## if(!interactive()){
+##  args <- commandArgs(TRUE)
+##  filename <- args[[1]]; args <- args[-1]
+##  out_filename <- args[[1]]; args <- args[-1]
+##  normalize_facets_depth(filename, out_filename)
+## }

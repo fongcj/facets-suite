@@ -1,4 +1,4 @@
-
+#!/usr/bin/env Rscript
 
 fread_rbind <- function(filenames, fn = fread){
   rbindlist(idcol = "filename",

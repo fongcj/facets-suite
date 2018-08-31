@@ -1,35 +1,39 @@
-#!/opt/common/CentOS_6-dev/R/R-3.1.3/bin/Rscript
 
-library(argparse)
-library(data.table)
-library(ggplot2)
-old <- theme_set(theme_bw(30))
-library(gtable)
-library(gridExtra)
-library(grid)
+#' @import data.table
+#' @import stringr
+#' @import ggplot2
+#' @import Cairo
+#' @import gtable
+#' @import gridExtra
+#' @import grid
 
-getSDIR <- function(){
-  args=commandArgs(trailing=F)
-  TAG="--file="
-  path_idx=grep(TAG,args)
-  SDIR=dirname(substr(args[path_idx],nchar(TAG)+1,nchar(args[path_idx])))
-  if(length(SDIR)==0) {
-    return(getwd())
-  } else {
-    return(SDIR)
-  }
-}
+
 
 #############################################
 ### definition of copy number calls in WGD
-FACETS_CALL_table <- fread(paste0(getSDIR(), "/FACETS_CALL_table.txt"))
-setkey(FACETS_CALL_table, WGD, mcn, lcn)
+## FACETS_CALL_table <- fread(paste0(getSDIR(), "/FACETS_CALL_table.txt"))
+## setkey(FACETS_CALL_table, WGD, mcn, lcn)
 ### lowest value of tcn for AMP
-AMP_thresh_tcn <- 6
+## AMP_thresh_tcn <- 6
 #############################################
 
 
-
+#' @name annotate_integer_copy_number
+#' @title don't know
+#' @description
+#'
+#' don't know
+#'
+#' @param maf numeric first argument
+#' @param output_pdf numeric first argument
+#' @param log numeric first argument
+#' @param threshold numeric first argument
+#' @param type numeric first argument
+#' @param purity numeric first argument
+#' @param nbins numeric first argument
+#' @param label_WGD numeric first argument
+#' @param AMP_thresh_tcn numeric first argument
+#' @return don't know
 af_grid <- function(maf,
                     output_pdf,
                     log="-",
@@ -37,8 +41,12 @@ af_grid <- function(maf,
                     type="ccf",
                     purity=NA,
                     nbins=30,
-                    label_WGD = "no WGD"
+                    label_WGD = "no WGD", 
+                    AMP_thresh_tcn=6
                     ){
+  
+  FACETS_CALL_table = fread(system.file("extdata", "FACETS_CALL_table.txt", package = "facets.suite"))
+  setkey(FACETS_CALL_table, WGD, mcn, lcn)
   ### maf must be annotated with tcn and lcn from facets
   maf[,mcn:=as.integer(as.character(tcn))-as.integer(as.character(lcn))]
   mcn_threshold_levels <- c(paste(1:threshold-1), paste0(threshold, "+"))
@@ -129,22 +137,26 @@ af_grid <- function(maf,
   # dev.print(dev = pdf, file = output_pdf, width = 14, height = 12)
 }
 
-if(!interactive()){
 
-  parser = ArgumentParser()
-  parser$add_argument('-m', '--maffile', type='character', help='FACETS-annotated maf to check')
-  parser$add_argument('-o', '--outfile', type='character', help='Output filename')
-  args=parser$parse_args()
-
-  maf = suppressWarnings(fread(args$maffile))
-  outfile = args$outfile
-  print(length(unique(maf$Tumor_Sample_Barcode)))
-  pdf(outfile, width = 14, height = 12)
-   lapply(unlist(unique(maf$Tumor_Sample_Barcode)),
-          function(bc, outfile){
-            print(grid.arrange(af_grid(maf[Tumor_Sample_Barcode == bc], outfile)))
-          },
-          outfile = args$outfile)
-  # lapply(1:2, function(y){print(grid.arrange(rectGrob(), qplot(y=y)))})
-  dev.off()
-}
+## 
+## if(!interactive()){
+## 
+##   parser = ArgumentParser()
+##   parser$add_argument('-m', '--maffile', type='character', help='FACETS-annotated maf to check')
+##   parser$add_argument('-o', '--outfile', type='character', help='Output filename')
+##   args=parser$parse_args()
+## 
+##   maf = suppressWarnings(fread(args$maffile))
+##   outfile = args$outfile
+##   print(length(unique(maf$Tumor_Sample_Barcode)))
+##   pdf(outfile, width = 14, height = 12)
+##    lapply(unlist(unique(maf$Tumor_Sample_Barcode)),
+##           function(bc, outfile){
+##             print(grid.arrange(af_grid(maf[Tumor_Sample_Barcode == bc], outfile)))
+##           },
+##           outfile = args$outfile)
+##   # lapply(1:2, function(y){print(grid.arrange(rectGrob(), qplot(y=y)))})
+##   dev.off()
+## }
+## 
+## 

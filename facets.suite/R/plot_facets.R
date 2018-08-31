@@ -1,25 +1,23 @@
 
+#' @import data.table
+#' @import stringr
+#' @import ggplot2
+#' @import Cairo
 
-library(ggplot2)
-library(Cairo)
-library(argparse)
-library(stringr)
-getSDIR = function(){
-    args=commandArgs(trailing=F)
-    TAG="--file="
-    path_idx=grep(TAG,args)
-    SDIR=dirname(substr(args[path_idx],nchar(TAG)+1,nchar(args[path_idx])))
-    if(length(SDIR)==0) {
-        return(getwd())
-    } else {
-        return(SDIR)
-    }
-}
+## source(file.path(getSDIR(),"fPlots_ggplot2.R"))
 
-source(file.path(getSDIR(),"fPlots_ggplot2.R"))
+## args = commandArgs(TRUE)
+## if (length(args) < 1) stop('Usage: plot-facets.R sample.Rdata optional-name')
 
-args = commandArgs(TRUE)
-if (length(args) < 1) stop('Usage: plot-facets.R sample.Rdata optional-name')
+
+#' @name plot_facets_function 
+#' @title don't know
+#' @description
+#'
+#' temporary function
+#'
+#' @return don't know
+plot_facets_function = function(){
 
 rdata = args[1]
 if (length(args)==2) { name = args[2] } else { name = NULL }
@@ -30,9 +28,9 @@ outfile = readLines(outfile)
 DIRECTORY=dirname(rdata)
 TAG=gsub('.Rdata', '', basename(rdata))
 if (!is.null(name)) {
-		DIRECTORY = getwd()
-		suffix = str_extract(TAG, 'purity|hisens')
-		if (is.na(suffix)) { TAG = name } else { TAG = str_c(name, '_', suffix) }
+        DIRECTORY = getwd()
+        suffix = str_extract(TAG, 'purity|hisens')
+        if (is.na(suffix)) { TAG = name } else { TAG = str_c(name, '_', suffix) }
 }
 
 filename = paste0(DIRECTORY, "/", TAG,".CNCF")
@@ -50,3 +48,7 @@ if (grepl('purity', rdata)) {
 main = paste(TAG, ' | cval=', CVAL, ' | purity=', fit$purity, ' | ploidy= ', fit$ploidy, ' | dipLogR=', fit$dipLogR, sep='')
 
 plot.facets.all.output(out, fit, type='png', main=main, plotname=filename, em.plot = T)
+
+}
+
+

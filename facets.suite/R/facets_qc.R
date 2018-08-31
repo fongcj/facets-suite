@@ -1,4 +1,3 @@
-#!/usr/bin/env Rscript
 
 ##########################################################################################
 ##########################################################################################
@@ -13,19 +12,30 @@ catverbose <- function(...){
   cat(format(Sys.time(), "%Y%m%d %H:%M:%S |"), ..., "\n")
 }
 
-getSDIR <- function(){
-  args=commandArgs(trailing=F)
-  TAG="--file="
-  path_idx=grep(TAG,args)
-  SDIR=dirname(substr(args[path_idx],nchar(TAG)+1,nchar(args[path_idx])))
-  if(length(SDIR)==0) {
-    return(getwd())
-  } else {
-    return(SDIR)
-  }
-}
+## getSDIR <- function(){
+##   args=commandArgs(trailing=F)
+##   TAG="--file="
+##   path_idx=grep(TAG,args)
+##   SDIR=dirname(substr(args[path_idx],nchar(TAG)+1,nchar(args[path_idx])))
+##   if(length(SDIR)==0) {
+##     return(getwd())
+##   } else {
+##     return(SDIR)
+##   }
+## }
 
-plot_vaf_by_cn_state <- function(maf, sample, wgd=F){
+
+#' @name plot_vaf_by_cn_state
+#' @title don't know
+#' @description
+#'
+#' don't know
+#'
+#' @param maf numeric first argument
+#' @param sample numeric first argument
+#' @param wgd numeric first argument
+#' @return don't know
+plot_vaf_by_cn_state <- function(maf, sample, wgd=FALSE){
   if ('mcn' %!in% names(maf)){
     maf[, mcn := tcn-lcn]
   }
@@ -69,7 +79,7 @@ center_igv_file <- function(outfile){
   
 }
 
-facets_qc <- function(maf, facets, igv=F){
+facets_qc <- function(maf, facets, igv=FALSE){
   
   summary <- c()
   flagged <- c()
@@ -297,31 +307,31 @@ facets_qc <- function(maf, facets, igv=F){
 
 }
 
-if ( ! interactive() ) {
-  
-  pkgs = c('data.table', 'argparse', 'RColorBrewer', 'ggplot2', 'grid')
-  tmp <- lapply(pkgs, require, quietly=T, character.only = T)
-  rm(tmp)
-  #options(datatable.showProgress = FALSE)
-  
-  parser=ArgumentParser()
-  parser$add_argument('-m', '--maf', required=T, type='character', help='MAF file with FACETS annotations')
-  parser$add_argument('-f', '--facets', required=T, type='character', 
-                      help='Mapping of "Tumor_Sample_Barcode" from maf and "Rdata_filename" from FACETS (tab-delimited with header)')
-  parser$add_argument('-i', '--igv', action='store_true', default=F,
-                      help='Output adjusted seg file for IGV')
-  args=parser$parse_args()
-
-  maf <- suppressWarnings(fread(paste0("grep -v '^#' ", args$maf)))
-  maf[, patient := stringr::str_extract(Tumor_Sample_Barcode, "P-[0-9]{7}-T[0-9]{2}-IM[0-9]")]
-  facets <- fread(args$facets)
-  setnames(facets, c("Tumor_Sample_Barcode", "Rdata_filename"))
-  igv <- args$igv
-  
-  sink('FACETS_QC.log')
-  facets_qc(maf, facets, igv)
-  sink()
-  
-}
+## if ( ! interactive() ) {
+##   
+##   pkgs = c('data.table', 'argparse', 'RColorBrewer', 'ggplot2', 'grid')
+##   tmp <- lapply(pkgs, require, quietly=T, character.only = T)
+##   rm(tmp)
+##   #options(datatable.showProgress = FALSE)
+##  
+##  parser=ArgumentParser()
+##  parser$add_argument('-m', '--maf', required=T, type='character', help='MAF file with FACETS annotations')
+##  parser$add_argument('-f', '--facets', required=T, type='character', 
+##                      help='Mapping of "Tumor_Sample_Barcode" from maf and "Rdata_filename" from FACETS (tab-delimited with header)')
+##  parser$add_argument('-i', '--igv', action='store_true', default=F,
+##                      help='Output adjusted seg file for IGV')
+##  args=parser$parse_args()
+##
+##  maf <- suppressWarnings(fread(paste0("grep -v '^#' ", args$maf)))
+##  maf[, patient := stringr::str_extract(Tumor_Sample_Barcode, "P-[0-9]{7}-T[0-9]{2}-IM[0-9]")]
+##  facets <- fread(args$facets)
+##  setnames(facets, c("Tumor_Sample_Barcode", "Rdata_filename"))
+##  igv <- args$igv
+##  
+##  sink('FACETS_QC.log')
+##  facets_qc(maf, facets, igv)
+##  sink()
+##  
+## }
 
 

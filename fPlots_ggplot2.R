@@ -1,23 +1,31 @@
-require(bit64)
-require(Cairo)
-require(ggplot2)
-require(grid)
-require(gridExtra)
-require(plyr)
 
-### Get path to repo
-getSDIR <- function(){
-  args=commandArgs(trailing=F)
-  TAG="--file="
-  path_idx=grep(TAG,args)
-  SDIR=dirname(substr(args[path_idx],nchar(TAG)+1,nchar(args[path_idx])))
-  if(length(SDIR)==0) {
-    return(getwd())
-  } else {
-    return(SDIR)
-  }
-}
+#'@import rtracklayer
+#'@import BSgenome.Hsapiens.UCSC.hg19
+#'@import bit64
+#'@import Cairo
+#'@import ggplot2
+#'@import grid
+#'@import gridExtra
+#'@import plyr
 
+#' @name copy.number.log.ratio
+#' @title don't know
+#' @description
+#'
+#' temporary function
+#'
+#' @param out numeric first argument
+#' @param fit numeric first argument
+#' @param load.genome numeric first argument
+#' @param gene.pos numeric first argument
+#' @param col.1 numeric first argument
+#' @param col.2 numeric first argument
+#' @param sample.num numeric first argument
+#' @param lend numeric first argument
+#' @param theme numeric first argument
+#' @param subset.indices numeric first argument
+#' @param plotX numeric first argument
+#' @return don't know
 copy.number.log.ratio = function(out, fit, load.genome=FALSE, gene.pos=NULL, col.1="#0080FF", col.2="#4CC4FF", sample.num=NULL, lend='butt', theme='bw', subset.indices = NULL, plotX = FALSE){
   
   mat = out$jointseg
@@ -85,6 +93,15 @@ copy.number.log.ratio = function(out, fit, load.genome=FALSE, gene.pos=NULL, col
   cnlr
 }
 
+
+#' @name copy.number.log.ratio
+#' @title don't know
+#' @description
+#'
+#' temporary function
+#'
+#' @param gene_level numeric first argument
+#' @return don't know
 var.allele.log.odds.ratio = function(out, fit, load.genome=FALSE, gene.pos=NULL, col.1="#0080FF", col.2="#4CC4FF", sample.num=NULL, lend='butt', theme='bw', subset.indices = NULL, plotX = FALSE){
   
   mat = out$jointseg
@@ -147,6 +164,15 @@ var.allele.log.odds.ratio = function(out, fit, load.genome=FALSE, gene.pos=NULL,
   valor
 }
 
+
+#' @name copy.number.log.ratio
+#' @title don't know
+#' @description
+#'
+#' temporary function
+#'
+#' @param gene_level numeric first argument
+#' @return don't know
 cellular.fraction = function(out, fit, method=c('cncf', 'em'), load.genome=FALSE, gene.pos=NULL, main='', lend='butt', theme='bw', plotX = FALSE, ...){
   
   mat = out$jointseg
@@ -191,6 +217,15 @@ cellular.fraction = function(out, fit, method=c('cncf', 'em'), load.genome=FALSE
   cf
 }
 
+
+#' @name copy.number.log.ratio
+#' @title don't know
+#' @description
+#'
+#' temporary function
+#'
+#' @param gene_level numeric first argument
+#' @return don't know
 integer.copy.number = function(out, fit, method=c('cncf', 'em'), load.genome=FALSE, gene.pos=NULL, main='', lend='butt', theme='bw', plotX = FALSE, ...){
   
   mat = out$jointseg
@@ -243,6 +278,15 @@ integer.copy.number = function(out, fit, method=c('cncf', 'em'), load.genome=FAL
   icn
 }
 
+
+#' @name copy.number.log.ratio
+#' @title don't know
+#' @description
+#'
+#' temporary function
+#'
+#' @param gene_level numeric first argument
+#' @return don't know
 clonal.cluster = function(out, fit, method='em', load.genome=FALSE, gene.pos=NULL, main='', theme='bw', plotX = FALSE) {
   
   mat = out$jointseg
@@ -299,10 +343,19 @@ clonal.cluster = function(out, fit, method='em', load.genome=FALSE, gene.pos=NUL
   ccl
 }
 
+
+#' @name copy.number.log.ratio
+#' @title don't know
+#' @description
+#'
+#' temporary function
+#'
+#' @param gene_level numeric first argument
+#' @return don't know
 get.cumulative.chr.maploc = function(mat, load.genome=FALSE){
 
   if(load.genome){
-    require(BSgenome.Hsapiens.UCSC.hg19)
+    ## require(BSgenome.Hsapiens.UCSC.hg19)
     genome = BSgenome.Hsapiens.UCSC.hg19
     chrom.lengths = seqlengths(genome)[1:23]
   }
@@ -325,10 +378,18 @@ get.cumulative.chr.maploc = function(mat, load.genome=FALSE){
 }
 
 
-get.gene.pos = function(hugo.symbol,my.path=paste0(getSDIR(),'/Homo_sapiens.GRCh37.75.canonical_exons.bed'),load.genome=FALSE){
+#' @name copy.number.log.ratio
+#' @title don't know
+#' @description
+#'
+#' temporary function
+#'
+#' @param gene_level numeric first argument
+#' @return don't know
+get.gene.pos = function(hugo.symbol, my.path = system.file("extdata", "Homo_sapiens.GRCh37.75.canonical_exons.bed", package = "facets.suite"), load.genome=FALSE){
 
   if(load.genome){
-    require(BSgenome.Hsapiens.UCSC.hg19)
+    ## require(BSgenome.Hsapiens.UCSC.hg19)
     genome = BSgenome.Hsapiens.UCSC.hg19
     chrom.lengths = seqlengths(genome)[1:23]
   }
@@ -339,7 +400,7 @@ get.gene.pos = function(hugo.symbol,my.path=paste0(getSDIR(),'/Homo_sapiens.GRCh
 
   cum.chrom.lengths = cumsum(as.numeric(chrom.lengths))
 
-  require(rtracklayer)
+  ## require(rtracklayer)
   genes = import.bed(my.path)
   mcols(genes)$name = matrix(unlist(strsplit(mcols(genes)$name,':')),nc=3,byrow=T)[,1]
  
@@ -356,7 +417,15 @@ get.gene.pos = function(hugo.symbol,my.path=paste0(getSDIR(),'/Homo_sapiens.GRCh
 }
 
 
-# Standard facets output plot
+
+#' @name copy.number.log.ratio
+#' @title don't know
+#' @description
+#'
+#' Standard facets output plot
+#'
+#' @param gene_level numeric first argument
+#' @return don't know
 plot.facets.all.output = function(out, fit, w=850, h=1100, type='png', load.genome=FALSE, main='', plotname='test',
   gene.name=NULL, lend='butt', em.plot = FALSE, subset.snps=FALSE) {
 
@@ -407,7 +476,14 @@ plot.facets.all.output = function(out, fit, w=850, h=1100, type='png', load.geno
 
 }
 
-# Subset SNPs for plots that can be handled by e.g. Illustrator, defaults to 5-fold downsampling at present
+#' @name copy.number.log.ratio
+#' @title don't know
+#' @description
+#'
+#' Subset SNPs for plots that can be handled by e.g. Illustrator, defaults to 5-fold downsampling at present
+#'
+#' @param gene_level numeric first argument
+#' @return don't know
 random.subset.snps = function(jointseg, by_factor=5) {
     chrom.weigths = table(jointseg$chrom)/sum(table(jointseg$chrom))
     row.weights = chrom.weigths[match(jointseg$chrom, names(chrom.weigths))]
@@ -415,7 +491,15 @@ random.subset.snps = function(jointseg, by_factor=5) {
     subset.indices
 }
 
-# Need to add this functionality so it can be callled by the wrapper, doFacets.R etc.
+
+#' @name copy.number.log.ratio
+#' @title don't know
+#' @description
+#'
+#' Need to add this functionality so it can be callled by the wrapper, doFacets.R etc.
+#'
+#' @param gene_level numeric first argument
+#' @return don't know
 close.up = function(out, fit, chrom.range=NULL, method=NA, gene.name=NULL, lend='butt', bed.path=NULL, subset.snps=FALSE, plotX = FALSE, ...){
 
   if (!is.null(bed.path)) { gene.info = get.gene.pos(gene.name, my.path = bed.path)
@@ -459,55 +543,55 @@ close.up = function(out, fit, chrom.range=NULL, method=NA, gene.name=NULL, lend=
 ########################################################################################################################
 ########################################################################################################################
 
-#Example Plot
-akt1.close.ups = function(chrom.range = 13:15, gene.name ='AKT1', w=13, h=8, plotname='proj_5513_wxs.pdf',type='pdf',method='cncf'){
+## #Example Plot
+## akt1.close.ups = function(chrom.range = 13:15, gene.name ='AKT1', w=13, h=8, plotname='proj_5513_wxs.pdf',type='pdf',method='cncf'){
+## 
+##   load('~/work//AKT1_UCEC//my_r_003//s_TS01_T/s_TS01_T__s_TS01_N/facets_p300c100/s_TS01_T__s_TS01_N_hisens.Rdata')
+##   ts01 = close.up(out, fit, chrom.range=chrom.range, method=method, gene.name=gene.name)
+## 
+##   load('~/work//AKT1_UCEC//my_r_003//s_TS02_T/s_TS02_T__s_TS02_N/facets_p300c100/s_TS02_T__s_TS02_N_hisens.Rdata')
+##   ts02 = close.up(out, fit, chrom.range=chrom.range, method=method, gene.name=gene.name)
+## 
+##   load('~/work//AKT1_UCEC//my_r_003//s_TS03_T/s_TS03_T__s_TS03_N/facets_p300c100/s_TS03_T__s_TS03_N_hisens.Rdata')
+##   ts03 = close.up(out, fit, chrom.range=chrom.range, method=method, gene.name=gene.name)
+## 
+##   load('~/work//AKT1_UCEC//my_r_003//s_TS04_T/s_TS04_T__s_TS04_N/facets_p300c100/s_TS04_T__s_TS04_N_hisens.Rdata')
+##   ts04 = close.up(out, fit, chrom.range=chrom.range, method=method, gene.name=gene.name)
+## 
+##   load('~/work//AKT1_UCEC//my_r_003//s_TS05_T/s_TS05_T__s_TS05_N/facets_p300c100/s_TS05_T__s_TS05_N_hisens.Rdata')
+##   ts05 = close.up(out, fit, chrom.range=chrom.range, method=method, gene.name=gene.name)
+## 
+##   layout = matrix(1:15, nrow = 3)
+##   if(type == 'pdf'){CairoPDF(width = w, height=h, file=plotname)}
+##   if(type == 'png'){CairoPNG(width = w, height=h, file=plotname, units='px')}
+##   grid.arrange(ts01$cnlr, ts02$cnlr, ts03$cnlr, ts04$cnlr, ts05$cnlr,
+##                ts01$valor, ts02$valor, ts03$valor,  ts04$valor, ts05$valor,
+##                ts01$icncncf, ts02$icncncf, ts03$icncncf, ts04$icncncf, ts05$icncncf,
+##                ncol=5, nrow=3)
+##   dev.off()
+## }
 
-  load('~/work//AKT1_UCEC//my_r_003//s_TS01_T/s_TS01_T__s_TS01_N/facets_p300c100/s_TS01_T__s_TS01_N_hisens.Rdata')
-  ts01 = close.up(out, fit, chrom.range=chrom.range, method=method, gene.name=gene.name)
 
-  load('~/work//AKT1_UCEC//my_r_003//s_TS02_T/s_TS02_T__s_TS02_N/facets_p300c100/s_TS02_T__s_TS02_N_hisens.Rdata')
-  ts02 = close.up(out, fit, chrom.range=chrom.range, method=method, gene.name=gene.name)
-
-  load('~/work//AKT1_UCEC//my_r_003//s_TS03_T/s_TS03_T__s_TS03_N/facets_p300c100/s_TS03_T__s_TS03_N_hisens.Rdata')
-  ts03 = close.up(out, fit, chrom.range=chrom.range, method=method, gene.name=gene.name)
-
-  load('~/work//AKT1_UCEC//my_r_003//s_TS04_T/s_TS04_T__s_TS04_N/facets_p300c100/s_TS04_T__s_TS04_N_hisens.Rdata')
-  ts04 = close.up(out, fit, chrom.range=chrom.range, method=method, gene.name=gene.name)
-
-  load('~/work//AKT1_UCEC//my_r_003//s_TS05_T/s_TS05_T__s_TS05_N/facets_p300c100/s_TS05_T__s_TS05_N_hisens.Rdata')
-  ts05 = close.up(out, fit, chrom.range=chrom.range, method=method, gene.name=gene.name)
-
-  layout = matrix(1:15, nrow = 3)
-  if(type == 'pdf'){CairoPDF(width = w, height=h, file=plotname)}
-  if(type == 'png'){CairoPNG(width = w, height=h, file=plotname, units='px')}
-  grid.arrange(ts01$cnlr, ts02$cnlr, ts03$cnlr, ts04$cnlr, ts05$cnlr,
-               ts01$valor, ts02$valor, ts03$valor,  ts04$valor, ts05$valor,
-               ts01$icncncf, ts02$icncncf, ts03$icncncf, ts04$icncncf, ts05$icncncf,
-               ncol=5, nrow=3)
-  dev.off()
-}
-
-
-#Example Plots
-akt1.wxs = function(){
-
-  load('~/work//AKT1_UCEC//my_r_003//s_TS01_T/s_TS01_T__s_TS01_N/facets_p300c100/s_TS01_T__s_TS01_N.Rdata')
-  #load('/ifs/work/taylorlab/donoghum/AKT1_UCEC//my_r_003//s_TS01_T/s_TS01_T__s_TS01_N/facets_p300c100/s_TS01_T__s_TS01_N_hisens.Rdata')
-  plot.facets.all.output(out, fit, type='pdf', main='TS01 | cval: 100', plotname='TS01', gene.name='AKT1')
-
-  load('~/work//AKT1_UCEC//my_r_003//s_TS02_T/s_TS02_T__s_TS02_N/facets_p300c100/s_TS02_T__s_TS02_N.Rdata')
-  #load('/ifs/work/taylorlab/donoghum/AKT1_UCEC//my_r_003//s_TS02_T/s_TS02_T__s_TS02_N/facets_p300c100/s_TS02_T__s_TS02_N.Rdata')
-  plot.facets.all.output(out, fit, type='pdf', main='TS02 | cval: 100', plotname='TS02', gene.name='AKT1')
-
-  load('~/work//AKT1_UCEC//my_r_003//s_TS03_T/s_TS03_T__s_TS03_N/facets_p300c100/s_TS03_T__s_TS03_N.Rdata')
-  #load('/ifs/work/taylorlab/donoghum/AKT1_UCEC//my_r_003//s_TS03_T/s_TS03_T__s_TS03_N/facets_p300c100/s_TS03_T__s_TS03_N.Rdata')
-  plot.facets.all.output(out, fit, type='pdf', main='TS03 | cval: 100', plotname='TS03', gene.name='AKT1')
-
-  load('~/work//AKT1_UCEC//my_r_003//s_TS04_T/s_TS04_T__s_TS04_N/facets_p300c100/s_TS04_T__s_TS04_N.Rdata')
-  #load('/ifs/work/taylorlab/donoghum/AKT1_UCEC//my_r_003//s_TS04_T/s_TS04_T__s_TS04_N/facets_p300c100/s_TS04_T__s_TS04_N.Rdata')
-  plot.facets.all.output(out, fit, type='pdf', main='TS04 | cval: 100', plotname='TS04', gene.name='AKT1')
-
-  load('~/work//AKT1_UCEC//my_r_003//s_TS05_T/s_TS05_T__s_TS05_N/facets_p300c100/s_TS05_T__s_TS05_N.Rdata')
-  #load('/ifs/work/taylorlab/donoghum/AKT1_UCEC//my_r_003//s_TS05_T/s_TS05_T__s_TS05_N/facets_p300c100/s_TS05_T__s_TS05_N.Rdata')
-  plot.facets.all.output(out, fit, type='pdf', main='TS05 | cval: 100', plotname='TS05', gene.name='AKT1')
-}
+## #Example Plots
+## akt1.wxs = function(){
+## 
+##   load('~/work//AKT1_UCEC//my_r_003//s_TS01_T/s_TS01_T__s_TS01_N/facets_p300c100/s_TS01_T__s_TS01_N.Rdata')
+##   #load('/ifs/work/taylorlab/donoghum/AKT1_UCEC//my_r_003//s_TS01_T/s_TS01_T__s_TS01_N/facets_p300c100/s_TS01_T__s_TS01_N_hisens.Rdata')
+##   plot.facets.all.output(out, fit, type='pdf', main='TS01 | cval: 100', plotname='TS01', gene.name='AKT1')
+## 
+##   load('~/work//AKT1_UCEC//my_r_003//s_TS02_T/s_TS02_T__s_TS02_N/facets_p300c100/s_TS02_T__s_TS02_N.Rdata')
+##   #load('/ifs/work/taylorlab/donoghum/AKT1_UCEC//my_r_003//s_TS02_T/s_TS02_T__s_TS02_N/facets_p300c100/s_TS02_T__s_TS02_N.Rdata')
+##   plot.facets.all.output(out, fit, type='pdf', main='TS02 | cval: 100', plotname='TS02', gene.name='AKT1')
+## 
+##   load('~/work//AKT1_UCEC//my_r_003//s_TS03_T/s_TS03_T__s_TS03_N/facets_p300c100/s_TS03_T__s_TS03_N.Rdata')
+##   #load('/ifs/work/taylorlab/donoghum/AKT1_UCEC//my_r_003//s_TS03_T/s_TS03_T__s_TS03_N/facets_p300c100/s_TS03_T__s_TS03_N.Rdata')
+##   plot.facets.all.output(out, fit, type='pdf', main='TS03 | cval: 100', plotname='TS03', gene.name='AKT1')
+## 
+##   load('~/work//AKT1_UCEC//my_r_003//s_TS04_T/s_TS04_T__s_TS04_N/facets_p300c100/s_TS04_T__s_TS04_N.Rdata')
+##   #load('/ifs/work/taylorlab/donoghum/AKT1_UCEC//my_r_003//s_TS04_T/s_TS04_T__s_TS04_N/facets_p300c100/s_TS04_T__s_TS04_N.Rdata')
+##   plot.facets.all.output(out, fit, type='pdf', main='TS04 | cval: 100', plotname='TS04', gene.name='AKT1')
+## 
+##   load('~/work//AKT1_UCEC//my_r_003//s_TS05_T/s_TS05_T__s_TS05_N/facets_p300c100/s_TS05_T__s_TS05_N.Rdata')
+##   #load('/ifs/work/taylorlab/donoghum/AKT1_UCEC//my_r_003//s_TS05_T/s_TS05_T__s_TS05_N/facets_p300c100/s_TS05_T__s_TS05_N.Rdata')
+##   plot.facets.all.output(out, fit, type='pdf', main='TS05 | cval: 100', plotname='TS05', gene.name='AKT1')
+## }

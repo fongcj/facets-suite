@@ -1,4 +1,4 @@
-#!/opt/common/CentOS_6-dev/R/R-3.2.2/bin/Rscript
+
 
 ### modified version of doFacets.R
 ###
@@ -7,17 +7,17 @@
 ### output files for both iterations are retained
 
 
-getSDIR <- function(){
-    args=commandArgs(trailing=F)
-    TAG="--file="
-    path_idx=grep(TAG,args)
-    SDIR=dirname(substr(args[path_idx],nchar(TAG)+1,nchar(args[path_idx])))
-    if(length(SDIR)==0) {
-        return(getwd())
-    } else {
-        return(SDIR)
-    }
-}
+## getSDIR <- function(){
+##     args=commandArgs(trailing=F)
+##     TAG="--file="
+##     path_idx=grep(TAG,args)
+##     SDIR=dirname(substr(args[path_idx],nchar(TAG)+1,nchar(args[path_idx])))
+##     if(length(SDIR)==0) {
+##         return(getwd())
+##     } else {
+##         return(SDIR)
+##     }
+## }
 
 readSnpMatrix2<- function(pileup, err.thresh= Inf, del.thresh= Inf){
 	library(data.table)
@@ -183,7 +183,7 @@ results_figure <- function(out, fit, DIRECTORY, TAG, CVAL, GGPLOT, SINGLE_CHROM,
         }
 
         if(GGPLOT == 'F'){
-            source(file.path(getSDIR(),"fPlots.R"))
+            ##source(file.path(getSDIR(),"fPlots.R"))
             ## base graphics version
             CairoPNG(file=filename, height=h, width=w)
             plotSampleCNCF.custom(out$jointseg, out$out,fit, main=main)
@@ -191,7 +191,7 @@ results_figure <- function(out, fit, DIRECTORY, TAG, CVAL, GGPLOT, SINGLE_CHROM,
         }
 
         if(GGPLOT == 'T'){
-            source(file.path(getSDIR(),"fPlots_ggplot2.R"))
+            ## source(file.path(getSDIR(),"fPlots_ggplot2.R"))
             plot.facets.all.output(out, fit, type='png', main=main, plotname=filename, em.plot = EM_PLOT)
         }
     }
@@ -278,12 +278,12 @@ facets_iteration <- function(COUNTS_FILE, TAG, DIRECTORY, CVAL, DIPLOGR, NDEPTH,
 ##########################################################################################
 ##########################################################################################
 
-source(file.path(getSDIR(),"funcs.R"))
-source(file.path(getSDIR(),"nds.R"))
+## source(file.path(getSDIR(),"funcs.R"))
+## source(file.path(getSDIR(),"nds.R"))
 
-library(ggplot2)
-library(Cairo)
-library(argparse)
+
+#' @import ggplot2
+#' @import Cairo
 
 
 parser=ArgumentParser()
