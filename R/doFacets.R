@@ -13,7 +13,7 @@
 
 
 
-#' @name readSnpMatrix2 
+#' @name annotate_integer_copy_number
 #' @title don't know
 #' @description
 #'
@@ -42,31 +42,14 @@ readSnpMatrix2 = function(pileup, err.thresh= Inf, del.thresh= Inf){
 
 
 
-#' @name print_run_details
+#' @name annotate_integer_copy_number
 #' @title don't know
 #' @description
 #'
 #' don't know
 #'
-#' @param out numeric first argument
-#' @param fit numeric first argument
-#' @param COUNTS_FILE numeric first argument
-#' @param TAG numeric first argument
-#' @param DIRECTORY numeric first argument
-#' @param CVAL numeric first argument
-#' @param DIPLOGR numeric first argument
-#' @param NDEPTH numeric first argument
-#' @param SNP_NBHD numeric first argument
-#' @param MIN_NHET numeric first argument
-#' @param GENOME numeric first argument
-#' @param GGPLOT numeric first argument
-#' @param SINGLE_CHROM numeric first argument
-#' @param SEED numeric first argument
-#' @param RLIB_PATH numeric first argument
-#' @param RLIB_VERSION numeric first argument
-#' @param GIVE_PCVAL numeric first argument
-#' @param unmatched numeric first argument
-#' @param TUMOR_ID numeric first argument
+#' @param gene_level numeric first argument
+#' @param AMP_thresh_tcn numeric first argument
 #' @return don't know
 print_run_details <- function(out, fit, COUNTS_FILE, TAG, DIRECTORY, CVAL,
                               DIPLOGR, NDEPTH, SNP_NBHD,MIN_NHET, GENOME,
@@ -114,14 +97,14 @@ print_run_details <- function(out, fit, COUNTS_FILE, TAG, DIRECTORY, CVAL,
 
 
 
-#' @name select_genome
+#' @name annotate_integer_copy_number
 #' @title don't know
 #' @description
 #'
 #' don't know
 #'
-#' @param GENOME numeric first argument
-#' @param SINGLE_CHROM numeric first argument
+#' @param gene_level numeric first argument
+#' @param AMP_thresh_tcn numeric first argument
 #' @return don't know
 select_genome <- function(GENOME, SINGLE_CHROM){
 
@@ -150,13 +133,14 @@ select_genome <- function(GENOME, SINGLE_CHROM){
 }
 
 
-#' @name seed_setting
+#' @name annotate_integer_copy_number
 #' @title don't know
 #' @description
 #'
 #' don't know
 #'
-#' @param SEED numeric first argument
+#' @param gene_level numeric first argument
+#' @param AMP_thresh_tcn numeric first argument
 #' @return don't know
 seed_setting <- function(SEED){
 
@@ -171,17 +155,14 @@ seed_setting <- function(SEED){
 }
 
 
-#' @name seg_figure
+#' @name annotate_integer_copy_number
 #' @title don't know
 #' @description
 #'
 #' don't know
 #'
-#' @param out numeric first argument
-#' @param DIRECTORY numeric first argument
-#' @param TAG numeric first argument
-#' @param chromLevels numeric first argument
-#' @param CVAL numeric first argument
+#' @param gene_level numeric first argument
+#' @param AMP_thresh_tcn numeric first argument
 #' @return don't know
 seg_figure <- function(out, DIRECTORY, TAG, chromLevels, CVAL){
 
@@ -192,17 +173,14 @@ seg_figure <- function(out, DIRECTORY, TAG, chromLevels, CVAL){
 }
 
 
-#' @name write_output
+#' @name annotate_integer_copy_number
 #' @title don't know
 #' @description
 #'
 #' don't know
 #'
-#' @param out numeric first argument
-#' @param fit numeric first argument
-#' @param DIRECTORY numeric first argument
-#' @param TAG numeric first argument
-#' @param TUMOR_ID numeric first argument
+#' @param gene_level numeric first argument
+#' @param AMP_thresh_tcn numeric first argument
 #' @return don't know
 write_output <- function(out, fit, DIRECTORY, TAG, TUMOR_ID ){
 
@@ -219,21 +197,14 @@ write_output <- function(out, fit, DIRECTORY, TAG, TUMOR_ID ){
 }
 
 
-#' @name results_figure
+#' @name annotate_integer_copy_number
 #' @title don't know
 #' @description
 #'
 #' don't know
 #'
-#' @param out numeric first argument
-#' @param fit numeric first argument
-#' @param DIRECTORY numeric first argument
-#' @param TAG numeric first argument
-#' @param CVAL numeric first argument
-#' @param GGPLOT numeric first argument
-#' @param SINGLE_CHROM numeric first argument
-#' @param GIVE_PCVAL numeric first argument
-#' @param EM_PLOT numeric first argument
+#' @param gene_level numeric first argument
+#' @param AMP_thresh_tcn numeric first argument
 #' @return don't know
 results_figure <- function(out, fit, DIRECTORY, TAG, CVAL, GGPLOT, SINGLE_CHROM, GIVE_PCVAL, EM_PLOT=FALSE){
 
@@ -270,13 +241,14 @@ results_figure <- function(out, fit, DIRECTORY, TAG, CVAL, GGPLOT, SINGLE_CHROM,
 }
 
 
-#' @name extract_six_column_counts_matrix
+#' @name annotate_integer_copy_number
 #' @title don't know
 #' @description
 #'
 #' don't know
 #'
-#' @param COUNTS_FILE numeric first argument
+#' @param gene_level numeric first argument
+#' @param AMP_thresh_tcn numeric first argument
 #' @return don't know
 extract_six_column_counts_matrix <- function(COUNTS_FILE){
   mat <- fread(paste0("gunzip --stdout ", COUNTS_FILE))
@@ -302,29 +274,14 @@ extract_six_column_counts_matrix <- function(COUNTS_FILE){
 }
 
 
-#' @name facets_iteration
+#' @name annotate_integer_copy_number
 #' @title don't know
 #' @description
 #'
 #' don't know
 #'
-#' @param COUNTS_FILE numeric first argument
-#' @param TAG numeric first argument
-#' @param DIRECTORY numeric first argument
-#' @param CVAL numeric first argument
-#' @param DIPLOGR numeric first argument
-#' @param NDEPTH numeric first argument
-#' @param SNP_NBHD numeric first argument
-#' @param MIN_NHET numeric first argument
-#' @param GENOME numeric first argument
-#' @param GGPLOT numeric first argument
-#' @param SINGLE_CHROM numeric first argument
-#' @param SEED numeric first argument
-#' @param RLIB_PATH numeric first argument
-#' @param RLIB_VERSION numeric first argument
-#' @param GIVE_PCVAL numeric first argument
-#' @param unmatched numeric first argument
-#' @param TUMOR_ID numeric first argument
+#' @param gene_level numeric first argument
+#' @param AMP_thresh_tcn numeric first argument
 #' @return don't know
 facets_iteration <- function(COUNTS_FILE, TAG, DIRECTORY, CVAL, DIPLOGR, NDEPTH,
                              SNP_NBHD, MIN_NHET, GENOME, GGPLOT, SINGLE_CHROM,
