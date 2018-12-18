@@ -14,3 +14,7 @@ vignettes/*.html
 vignettes/*.pdf
 
 *.pyc
+.Rproj.user
+
+# fix this somehow, ~50 Mb to large
+data/example_read_counts.rda

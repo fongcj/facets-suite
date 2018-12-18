@@ -1,0 +1,3 @@
+Example data
+Out and fit objects from TCGA-GBM TCGA-06-0154 sample.
+Based on GRCh38 BAM files.

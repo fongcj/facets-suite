@@ -196,7 +196,7 @@ integer.copy.number = function(out, fit, method=c('cncf', 'em'), load.genome=FAL
   mat = out$jointseg
   if (!plotX) mat = subset(mat, chrom < 23)
   mat = get.cumulative.chr.maploc(mat, load.genome)
-  mid = mat$mid
+  mid = mat$midget.cumulative.chr.maploc
   mat = mat$mat
   
   cncf = fit$cncf
