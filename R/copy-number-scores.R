@@ -102,7 +102,7 @@ parse_segs = function(segs, algorithm) {
 get_sample_genome = function(segs, genome) {
     ldply(unique(segs$chrom), function(x) {
         chr = x
-        centromere = genome[which(genome$chr == x), 'centromere']
+        centromere = genome[which(genome$chrom == x), 'centromere']
         chrstart = min(segs[which(segs$chrom == x), 'start'])
         chrend = max(segs[which(segs$chrom == x), 'end'])
         size = chrend-chrstart
