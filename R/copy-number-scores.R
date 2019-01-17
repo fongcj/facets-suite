@@ -40,9 +40,9 @@ calculate_fcna = function(segs,
     
     # Calculate fraction of genome altered
     sample_ploidy = ifelse(wgd, round(ploidy), 2)
-    if (wgd) {
+    if (!wgd) {
         diploid_length = sum(segs$length[which(segs$tcn == sample_ploidy & segs$lcn == 1)])
-    } else if (!wgd) {
+    } else if (wgd) {
         diploid_length = sum(segs$length[which(segs$tcn == sample_ploidy & segs$lcn >= 1)]) 
     }
     frac_altered = (interrogated_genome-diploid_length)/interrogated_genome
