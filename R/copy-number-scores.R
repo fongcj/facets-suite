@@ -1,18 +1,14 @@
 #' Calculate copy-number based scores
 #'
+#' @name copy_number_scores
+#' @importFrom stats end start
+#' @importFrom grDevices colorRampPalette
 #' @param segs 
 #' @param ploidy 
 #' @param genome 
 #' @param algorithm 
 #'
-#' @return
 #' @export
-#'
-#' @name copy_number_scores
-NULL
-
-#' @export
-#' @rdname copy_number_scores
 calculate_fcna = function(segs,
                          ploidy,
                          genome = c('hg19', 'hg18'),

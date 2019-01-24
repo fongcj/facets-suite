@@ -9,9 +9,12 @@ Description: More about what it does (maybe more than one line)
 biocViews: 
 Depends:
     R (>= 3.1.0),
-    data.table (>= 1.10)
+    data.table (>= 1.10), 
+    dplyr
 Imports:
-    facets
+    facets,
+    grDevices, 
+    stats
 Suggests:
     testthat
 License: What license is it under?
