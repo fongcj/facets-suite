@@ -14,11 +14,11 @@ before_install:
   - ./travis-tool.sh bootstrap
 
 install:
+  - ./travis-tool.sh install_github mskcc/pctGCdata  
+  - ./travis-tool.sh install_github mskcc/facets
   - ./travis-tool.sh install_bioc_deps
   - ./travis-tool.sh install_deps
   - ./travis-tool.sh install_github r-lib/covr
-  - ./travis-tool.sh install_github mskcc/pctGCdata  
-  - ./travis-tool.sh install_github mskcc/facets
 
 
 script: ./travis-tool.sh run_tests
