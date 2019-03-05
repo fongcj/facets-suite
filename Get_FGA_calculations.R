@@ -5,14 +5,16 @@
 # By Chris Fong, MSKCC 2018
 #
 ###########################################################################
-if("data.table" %in% rownames(installed.packages()) == FALSE) {install.packages("data.table")}
+# if("data.table" %in% rownames(installed.packages()) == FALSE) {install.packages("data.table")}
 # if("facetsSuite" %in% rownames(installed.packages()) == FALSE) {install.packages("facetsSuite")}
-if("usethis" %in% rownames(installed.packages()) == FALSE) {install.packages("usethis")}
-if("readr" %in% rownames(installed.packages()) == FALSE) {install.packages("readr")}
+# if("usethis" %in% rownames(installed.packages()) == FALSE) {install.packages("usethis")}
+# if("readr" %in% rownames(installed.packages()) == FALSE) {install.packages("readr")}
 
 library("data.table")
 library("dplyr")
 library("methods")
+library("readr")
+library("usethis")
 # library("facetsSuite")
 
 # Source facets functions
