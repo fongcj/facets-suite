@@ -134,29 +134,30 @@ hg38 = tibble::tribble(
 )
 
 # Gene positions --------------------------------------------------------------------------------------------------
-genes_hg19 = fread('ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_29/GRCh37_mapping/gencode.v29lift37.basic.annotation.gtf.gz',
-                   header = F, skip = 'chr1',
-                   col.names = c('chrom', 'source', 'type', 'start', 'end', 'na_1', 'strand', 'na_2', 'info')) %>%
-    mutate(chrom = str_replace(chrom, 'chr', ''),
-           gene = str_extract(info, '(?<=gene_name ")[A-Z0-9\\.\\-]+(?=";)')) %>%
-    filter(type == 'gene', info %like% 'protein_coding') %>%
-    group_by(gene, chrom) %>%
-    summarize(start = min(start),
-              end = max(end)) %>%
-    ungroup()
+# genes_hg19 = fread('ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_29/GRCh37_mapping/gencode.v29lift37.basic.annotation.gtf.gz',
+#                    header = F, skip = 'chr1',
+#                    col.names = c('chrom', 'source', 'type', 'start', 'end', 'na_1', 'strand', 'na_2', 'info')) %>%
+#     mutate(chrom = str_replace(chrom, 'chr', ''),
+#            gene = str_extract(info, '(?<=gene_name ")[A-Z0-9\\.\\-]+(?=";)')) %>%
+#     filter(type == 'gene', info %like% 'protein_coding') %>%
+#     group_by(gene, chrom) %>%
+#     summarize(start = min(start),
+#               end = max(end)) %>%
+#     ungroup()
+# 
+# genes_hg38 = fread('ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_29/gencode.v29.basic.annotation.gtf.gz',
+#                    header = F, skip = 'chr1',
+#                    col.names = c('chrom', 'source', 'type', 'start', 'end', 'na_1', 'strand', 'na_2', 'info')) %>%
+#     mutate(chrom = str_replace(chrom, 'chr', ''),
+#            gene = str_extract(info, '(?<=gene_name ")[A-Z0-9\\.\\-]+(?=";)')) %>%
+#     filter(type == 'gene', info %like% 'protein_coding') %>%
+#     group_by(gene, chrom) %>%
+#     summarize(start = min(start),
+#               end = max(end)) %>%
+#     ungroup()
 
-genes_hg38 = fread('ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_29/gencode.v29.basic.annotation.gtf.gz',
-                   header = F, skip = 'chr1',
-                   col.names = c('chrom', 'source', 'type', 'start', 'end', 'na_1', 'strand', 'na_2', 'info')) %>%
-    mutate(chrom = str_replace(chrom, 'chr', ''),
-           gene = str_extract(info, '(?<=gene_name ")[A-Z0-9\\.\\-]+(?=";)')) %>%
-    filter(type == 'gene', info %like% 'protein_coding') %>%
-    group_by(gene, chrom) %>%
-    summarize(start = min(start),
-              end = max(end)) %>%
-    ungroup()
-
-use_data(hg18, hg19, hg38, genes_hg19, genes_hg38, internal = T, overwrite = T)
+# use_data(hg18, hg19, hg38, genes_hg19, genes_hg38, internal = T, overwrite = T)
+use_data(hg18, hg19, hg38, internal = T, overwrite = T)
 
 
 # Copy-number states ----------------------------------------------------------------------------------------------
@@ -210,4 +211,5 @@ copy_number_states = tibble::tribble(
     TRUE,    6,    3,           2,                 'AMP'
 )
 
-use_data(hg18, hg19, hg38, genes_hg19, genes_hg38, copy_number_states, internal = T)
+# use_data(hg18, hg19, hg38, genes_hg19, genes_hg38, copy_number_states, internal = T)
+use_data(hg18, hg19, hg38, copy_number_states, internal = T, overwrite = T)
