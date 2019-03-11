@@ -54,18 +54,22 @@ for (i in 1:nrow(df_facets_loc)) {
     # Load Rdata
     load(pathfilename)
     
-    # Check if columns exist
+    # Check if columns exist and add other facet info
     if("loglik" %in% names(fit)) {
       loglik <- fit$loglik  
+      df_facets_loc[i, 'loglik'] <- loglik
     }
     if("purity" %in% names(fit)) {
       purity <- fit$purity  
+      df_facets_loc[i, 'purity'] <- purity
     }
     if("ploidy" %in% names(fit)) {
       ploidy <- fit$ploidy
+      df_facets_loc[i, 'ploidy'] <- ploidy
     }
     if("dipLogR" %in% names(fit)) {
       dipLogR <- fit$dipLogR
+      df_facets_loc[i, 'dipLogR'] <- dipLogR
     }
     
     # Compute CNA
@@ -76,12 +80,6 @@ for (i in 1:nrow(df_facets_loc)) {
     fga <- facets_cna$fraction_cna
     df_facets_loc[i, 'genome_doubled'] <- gd
     df_facets_loc[i, 'fraction_cna'] <- fga 
-    
-    # Other facet info
-    df_facets_loc[i, 'loglik'] <- loglik
-    df_facets_loc[i, 'purity'] <- purity
-    df_facets_loc[i, 'ploidy'] <- ploidy
-    df_facets_loc[i, 'dipLogR'] <- dipLogR
 
   }
 }
