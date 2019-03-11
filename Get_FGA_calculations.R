@@ -51,11 +51,22 @@ for (i in 1:nrow(df_facets_loc)) {
   pathfilename <- file.path(path_facets_loc, folder_sample, folder_facets, filename_facets)
   # Load R data
   if (file.exists(pathfilename)) {
+    # Load Rdata
     load(pathfilename)
-    loglik <- fit$loglik
-    purity <- fit$purity
-    ploidy <- fit$ploidy
-    dipLogR <- fit$dipLogR
+    
+    # Check if columns exist
+    if("loglik" %in% colnames(fit)) {
+      loglik <- fit$loglik  
+    }
+    if("purity" %in% colnames(fit)) {
+      purity <- fit$purity  
+    }
+    if("ploidy" %in% colnames(fit)) {
+      ploidy <- fit$ploidy
+    }
+    if("dipLogR" %in% colnames(fit)) {
+      dipLogR <- fit$dipLogR
+    }
     
     # Compute CNA
     facets_cna <- calculate_fraction_cna(segs=fit$cncf, ploidy=fit$ploidy, "hg19", "em")
