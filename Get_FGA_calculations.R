@@ -55,16 +55,16 @@ for (i in 1:nrow(df_facets_loc)) {
     load(pathfilename)
     
     # Check if columns exist
-    if("loglik" %in% colnames(fit)) {
+    if("loglik" %in% names(fit)) {
       loglik <- fit$loglik  
     }
-    if("purity" %in% colnames(fit)) {
+    if("purity" %in% names(fit)) {
       purity <- fit$purity  
     }
-    if("ploidy" %in% colnames(fit)) {
+    if("ploidy" %in% names(fit)) {
       ploidy <- fit$ploidy
     }
-    if("dipLogR" %in% colnames(fit)) {
+    if("dipLogR" %in% names(fit)) {
       dipLogR <- fit$dipLogR
     }
     
