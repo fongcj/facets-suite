@@ -14,3 +14,6 @@ vignettes/*.html
 vignettes/*.pdf
 
 *.pyc
+facets_Rdata
+facets_purity_seg
+data
