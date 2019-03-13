@@ -32,7 +32,11 @@ head(df_facets_loc)
 # path_facets_loc <- '/Users/fongc2/Desktop/luna_transfer/all'
 path_facets_loc <- '/ifs/res/taylorlab/impact_facets/all'
 
-# load('/Users/fongc2/Desktop/luna_transfer/all/P-0000004-T01-IM3_P-0000004-N01-IM3/facets_R0.5.6c50p150m15p15/P-0000004-T01-IM3_P-0000004-N01-IM3_purity.Rdata')
+p <- '/Users/fongc2/Desktop/luna_transfer/all/P-0000004-T01-IM3_P-0000004-N01-IM3/facets_R0.5.6c50p150m15p15/P-0000004-T01-IM3_P-0000004-N01-IM3_purity.Rdata'
+load(p)
+
+file.info(p)$ctime
+
 df_facets_loc$genome_doubled <- NaN
 df_facets_loc$fraction_cna <- NaN
 df_facets_loc$loglik <- NaN
