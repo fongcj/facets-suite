@@ -3,6 +3,7 @@
 ###########################
 
 # first calculate the size of each intergral copy
+# Input -- For a given Rdata file from facets, cncf = fit
 get_intergral_size = function(cncf) {
   cncf = fit$cncf
   cncf$size = cncf$end - cncf$start
