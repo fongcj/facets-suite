@@ -95,9 +95,9 @@ for (i in 1:nrow(df_facets_loc)) {
     # df_facets_loc[i, 'fraction_cna'] <- fga 
     
     # Compute CNA via PJ/CG's FGA script
-    int_size <- get_intergral_size(cncf=fit)
-    gd_bn <- get_FGA(intergral_size=int_size)
-    fga_bn <- is_WGD(intergral_size=int_size)
+    int_size <- get_integral_size(cncf=fit)
+    gd_bn <- get_FGA(integral_size=int_size)
+    fga_bn <- is_WGD(integral_size=int_size)
     # Place into df
     df_facets_loc[i, 'genome_doubled_bn_algo'] <- gd_bn
     df_facets_loc[i, 'fraction_cna_bn_algo'] <- fga_bn

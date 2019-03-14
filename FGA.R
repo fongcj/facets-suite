@@ -2,9 +2,9 @@
 #### nguyenb@mskcc.org ####
 ###########################
 
-# first calculate the size of each intergral copy
+# first calculate the size of each integral copy
 # Input -- For a given Rdata file from facets, cncf = fit
-get_intergral_size = function(cncf) {
+get_integral_size = function(cncf) {
   cncf = fit$cncf
   cncf$size = cncf$end - cncf$start
   tt = table(cncf$tcn.em)
@@ -24,8 +24,8 @@ get_intergral_size = function(cncf) {
 
 # two function to calculate FGA and WGD
 get_FGA = function(integral_size) {
-  intergral_cna = which.max(integral_size)
-  sum(integral_size[names(integral_size) != names(intergral_cna)], na.rm = T)/sum(integral_size, na.rm = T)
+  integral_cna = which.max(integral_size)
+  sum(integral_size[names(integral_size) != names(integral_cna)], na.rm = T)/sum(integral_size, na.rm = T)
 }
 
 is_WGD = function(integral_size) {
