@@ -52,10 +52,6 @@ df_all = df_facets.merge(right=df_cna_portal[['Sample ID', 'CNA Fraction']],
 df_all = df_all.drop(columns=['Sample ID', 'Unnamed: 0'])
 df_all = df_all.rename(columns={'fraction_cna': 'CNA FACETS', 'CNA Fraction': 'CNA Portal'})
 
-
-
-
-
 # Find s parameter
 regex_key = '(s+\d{2,3})'
 regex_func = re.compile(regex_key)

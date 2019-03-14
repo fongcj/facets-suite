@@ -13,8 +13,8 @@ library("ggplot2")
 
 
 # Load data raw
-pathname = "/Users/fongc2/Documents/github/MSK/metastatic_tropisms"
-fname = "facets_fga_all_20190311_with_fga.csv"
+pathname = "/Users/fongc2/Documents/github/MSK/facets-suite"
+fname = "facets_breast_cancer_hisens_cases.csv"
 filenamePath <- file.path(pathname, fname)
 df1 <- read.csv(filenamePath, header = TRUE)
 df1$genome_doubled <- as.logical(df1$genome_doubled)

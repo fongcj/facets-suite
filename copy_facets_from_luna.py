@@ -14,21 +14,21 @@ from shutil import copyfile
 dtype_suffix = '.seg'
 
 # Read sample list file
-path = '/Users/fongc2/Documents/github/MSK/facets-suite/data'
-fname = 'sample_ids_aacr_2019.csv'
+path = 'data'
+fname = 'get_seg_lists.txt'
 pathfilename = os.path.join(path, fname)
-sample_ids = pd.read_csv(pathfilename, header=0)
+sample_ids = pd.read_csv(pathfilename, header=None)
 
 # Read directory names, or determine directory list using os.listdir
 # Mount example:
 path_root = '/Users/fongc2/Desktop/luna_transfer/all/'         # Path for mounted Luna drive
 fname_folder_names = 'facet_folder_names_chai.csv'
-path_folder_names = ''
+path_folder_names = 'data'
 pathfilename_folders = os.path.join(path_folder_names, fname_folder_names)
 df_folder_names = pd.read_csv(pathfilename_folders, header=0, low_memory=False)
 
 # Define destination folder path
-folder_dest = '/Users/fongc2/Desktop/Rdata_subhi_2018_02_27'
+folder_dest = '/Users/fongc2/Desktop/seg_data_20190313'
 if os.path.isdir(folder_dest):
     os.rmdir(folder_dest)
 os.makedirs(folder_dest)
