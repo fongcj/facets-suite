@@ -99,8 +99,8 @@ for (i in 1:nrow(df_facets_loc)) {
     gd_bn <- get_FGA(integral_size=int_size)
     fga_bn <- is_WGD(integral_size=int_size)
     # Place into df
-    df_facets_loc[i, 'genome_doubled_bn_algo'] <- gd_bn
-    df_facets_loc[i, 'fraction_cna_bn_algo'] <- fga_bn
+    df_facets_loc[i, 'fraction_cna_bn_algo'] <- gd_bn
+    df_facets_loc[i, 'genome_doubled_bn_algo'] <- fga_bn
     
     # Compute mean and stdev of TCN data
     tcn_mu_sig <- facet_seg_stdev(cncf=fit)
