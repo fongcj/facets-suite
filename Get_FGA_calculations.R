@@ -25,30 +25,38 @@ source("FGA.R")
 source("segment_stdev.R")
 
 print('Loading facets locations')
-pathname = "data"
-fname = 'facets_fga_all_20190311_with_fga.csv'
-fname_out <- "facets_fga_all_20190314_with_multi_feature.csv"
-filenamePath <- file.path(pathname, fname)
-df_facets_loc <- read.csv(filenamePath, header = TRUE, sep = ',')
+fname_out <- 'facets_fga_all_20190417_with_multi_feature.csv'
+path_facets_loc <- '/Users/fongc2/Desktop/luna_transfer'
+# path_facets_loc <- '/ifs/res/taylorlab/impact_facets/facets_0.5.14/all/P-00342/P-0034223-T01-IM6_P-0034223-N01-IM6/default/'
+path_facets_loc_all <- 'all'
+path_facets_loc_manifests <- 'manifests'
+fname_loc = 'impact_facets_manifest_2019_04_21.txt'
+filenamePath <- file.path(path_facets_loc, path_facets_loc_manifests, fname_loc)
+
+df_facets_loc <- read.csv(filenamePath, header = TRUE, sep = '\t')
 head(df_facets_loc)
-# path_facets_loc <- '/Users/fongc2/Desktop/luna_transfer/all'
-path_facets_loc <- '/ifs/res/taylorlab/impact_facets/all'
+path_facets_loc <- '/Users/fongc2/Desktop/luna_transfer'
 
-# p <- '/Users/fongc2/Desktop/luna_transfer/all/P-0000004-T01-IM3_P-0000004-N01-IM3/facets_R0.5.6c50p150m15p15/P-0000004-T01-IM3_P-0000004-N01-IM3_purity.Rdata'
+# p <- '/Users/fongc2/Desktop/luna_transfer/all/P-00342/P-0034223-T01-IM6_P-0034223-N01-IM6/default/P-0034223-T01-IM6_P-0034223-N01-IM6_purity.Rdata'
 # load(p)
+cols_bn_chr <- c('Chr1', 'Chr2', 'Chr3', 'Chr4', 'Chr5', 'Chr6', 'Chr7', 'Chr8', 'Chr9', 'Chr10', 'Chr11',  'Chr12', 
+                 'Chr13', 'Chr14', 'Chr15', 'Chr16', 'Chr17', 'Chr18', 'Chr19', 'Chr20', 'Chr21', 'Chr22', 'Chr23')
+cols_bn_fga <- c('FGA', 'GAIN', 'LOSS', 'LOH', 'IS_WGD', 'EM_FLAGS')
 
-
-# df_facets_loc$genome_doubled <- NaN
-# df_facets_loc$fraction_cna <- NaN 
+df_facets_loc$genome_doubled <- NaN
+df_facets_loc$fraction_cna <- NaN
 df_facets_loc$genome_doubled_bn_algo <- NaN
 df_facets_loc$fraction_cna_bn_algo <- NaN
-# df_facets_loc$loglik <- NaN
-# df_facets_loc$purity <- NaN
-# df_facets_loc$ploidy <- NaN
-# df_facets_loc$dipLogR <- NaN
+df_facets_loc$loglik <- NaN
+df_facets_loc$purity <- NaN
+df_facets_loc$ploidy <- NaN
+df_facets_loc$dipLogR <- NaN
 df_facets_loc$timestamp <- NaN
 df_facets_loc$TCN_mean <- NaN
 df_facets_loc$TCN_stdev <- NaN
+
+df_facets_loc[cols_bn_fga] <- NA
+df_facets_loc[cols_bn_chr] <- NA
 
 # Compute Fraction CNA
 print('Calculating Fraction of Genome Altered')
@@ -64,43 +72,43 @@ for (i in 1:nrow(df_facets_loc)) {
     # Load Rdata
     load(pathfilename)
     
-    # # Check if columns exist and add other facet info
-    # if("loglik" %in% names(fit)) {
-    #   loglik <- fit$loglik  
-    #   df_facets_loc[i, 'loglik'] <- loglik
-    # }
-    # if("purity" %in% names(fit)) {
-    #   purity <- fit$purity  
-    #   df_facets_loc[i, 'purity'] <- purity
-    # }
-    # if("ploidy" %in% names(fit)) {
-    #   ploidy <- fit$ploidy
-    #   df_facets_loc[i, 'ploidy'] <- ploidy
-    # }
-    # if("dipLogR" %in% names(fit)) {
-    #   dipLogR <- fit$dipLogR
-    #   df_facets_loc[i, 'dipLogR'] <- dipLogR
-    # }
+    # Check if columns exist and add other facet info
+    if("loglik" %in% names(fit)) {
+      loglik <- fit$loglik
+      df_facets_loc[i, 'loglik'] <- loglik
+    }
+    if("purity" %in% names(fit)) {
+      purity <- fit$purity
+      df_facets_loc[i, 'purity'] <- purity
+    }
+    if("ploidy" %in% names(fit)) {
+      ploidy <- fit$ploidy
+      df_facets_loc[i, 'ploidy'] <- ploidy
+    }
+    if("dipLogR" %in% names(fit)) {
+      dipLogR <- fit$dipLogR
+      df_facets_loc[i, 'dipLogR'] <- dipLogR
+    }
     
     # Get time stamp of the .Rdata file
     time_stamp <- file.info(pathfilename)$ctime
     df_facets_loc[i, 'timestamp'] <- time_stamp
     
     # Compute CNA via PJ/CG's FGA script
-    # facets_cna <- calculate_fraction_cna(segs=fit$cncf, ploidy=fit$ploidy, "hg19", "em")
+    facets_cna <- calculate_fraction_cna(segs=fit$cncf, ploidy=fit$ploidy, "hg19", "em")
     # Place into df
-    # gd <- facets_cna$genome_doubled
-    # fga <- facets_cna$fraction_cna
-    # df_facets_loc[i, 'genome_doubled'] <- gd
-    # df_facets_loc[i, 'fraction_cna'] <- fga 
+    gd <- facets_cna$genome_doubled
+    fga <- facets_cna$fraction_cna
+    df_facets_loc[i, 'genome_doubled'] <- gd
+    df_facets_loc[i, 'fraction_cna'] <- fga
     
     # Compute CNA via PJ/CG's FGA script
-    int_size <- get_integral_size(cncf=fit)
-    gd_bn <- get_FGA(integral_size=int_size)
-    fga_bn <- is_WGD(integral_size=int_size)
+    fga_output <- get_FGA_BN(fit = fit, out = out)
+    chr_output <- get_FChrA(fit = fit, out = out)
+
     # Place into df
-    df_facets_loc[i, 'fraction_cna_bn_algo'] <- gd_bn
-    df_facets_loc[i, 'genome_doubled_bn_algo'] <- fga_bn
+    df_facets_loc[i, cols_bn_fga] <- fga_output[ , cols_bn_fga]
+    df_facets_loc[i, cols_bn_chr] <- chr_output[ , cols_bn_chr]
     
     # Compute mean and stdev of TCN data
     tcn_mu_sig <- facet_seg_stdev(cncf=fit)
@@ -110,6 +118,7 @@ for (i in 1:nrow(df_facets_loc)) {
     
   }
 }
+colnames(df_facets_loc)[colnames(df_facets_loc)=="FGA"] <- "CNA.FACETS.BN"
 
 write.csv(df_facets_loc, file = fname_out)
 
