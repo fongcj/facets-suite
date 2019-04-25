@@ -24,6 +24,9 @@ source("data-raw/sysdata.R")
 source("FGA.R")
 source("segment_stdev.R")
 
+# Additional functions
+printf <- function(...)print(sprintf(...))
+
 
 print('Loading facets locations')
 fname_out_prefix <- 'facets_0.5.14_fga_all_20190425_with_multi_feature'
