@@ -24,13 +24,14 @@ source("data-raw/sysdata.R")
 source("FGA.R")
 source("segment_stdev.R")
 
-printf <- function(...)print(sprintf(...))
 
 print('Loading facets locations')
-fname_out_prefix <- 'facets_0.5.14_fga_all_20190422_with_multi_feature'
+fname_out_prefix <- 'facets_0.5.14_fga_all_20190425_with_multi_feature'
 extension <- '.csv'
-path_facets_loc <- '/Users/fongc2/Desktop/luna_transfer/facets_0.5.14/'
+# path_facets_loc <- '/Users/fongc2/Desktop/luna_transfer/facets_0.5.14/'
+path_facets_loc <- '/ifs/res/taylorlab/impact_facets/facets_0.5.14/'
 path_facets_orig_path <- '/ifs/res/taylorlab/impact_facets/facets_0.5.14/'
+path_destination <- '/home/fongc2/github/facets-suite/'
 # path_facets_loc <- '/ifs/res/taylorlab/impact_facets/facets_0.5.14/all/P-00342/P-0034223-T01-IM6_P-0034223-N01-IM6/default/'
 path_facets_loc_all <- 'all'
 path_facets_loc_manifests <- 'manifests'
@@ -56,7 +57,7 @@ df_facets_output[cols_output] <- NA
 
 # Compute Fraction CNA
 print('Calculating Fraction of Genome Altered')
-for (k in 1:1) {
+for (k in 1:2) {
   if (k == 1) {
     logic_run_type <- df_facets_output$has_hisens_run == 'TRUE'
     fname_suffix <- '_hisens'
@@ -68,9 +69,10 @@ for (k in 1:1) {
   }
   df_facets_output_current <- df_facets_output[logic_run_type, ]
   fname_out <- paste(fname_out_prefix, fname_suffix, extension, sep = '')
+  filenamePath_output <- file.path(path_destination, fname_out)
   
   # for (i in 1:2) {
-  for (i in 20029:nrow(df_facets_output_current)) {
+  for (i in 1:nrow(df_facets_output_current)) {
     # Build Pathname
     folder_facets <- as.character(df_facets_output_current$run_output_dir[i])
     folder_facets_append <- gsub(path_facets_orig_path, path_facets_loc, folder_facets)
@@ -130,7 +132,7 @@ for (k in 1:1) {
     }
   }
   # colnames(df_facets_output)[colnames(df_facets_output)=="FGA"] <- "CNA.FACETS.BN"
-  write.csv(df_facets_output_current, file = fname_out, row.names = FALSE)
+  write.csv(df_facets_output_current, file = filenamePath_output, row.names = FALSE)
 }
 
 
