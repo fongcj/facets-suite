@@ -81,7 +81,7 @@ for (k in 1:2) {
     folder_facets_append <- gsub(path_facets_orig_path, path_facets_loc, folder_facets)
     # Build filename
     filename_facets_pre <- as.character(df_facets_output_current$tag[i])
-    filename_facets <- paste(filename_facets_pre, '_hisens.Rdata', sep = '')
+    filename_facets <- paste(filename_facets_pre, rdata_suffix, sep = '')
       
     pathfilename <- file.path(folder_facets_append, filename_facets)
     # Load R data
