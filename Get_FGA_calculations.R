@@ -29,16 +29,25 @@ printf <- function(...)print(sprintf(...))
 
 
 print('Loading facets locations')
-fname_out_prefix <- 'facets_0.5.14_fga_all_20190425_with_multi_feature'
+# Output filename
+fname_out_prefix <- 'facets_0.5.14_fga_all_20190512_with_multi_feature'
 extension <- '.csv'
+
+# Pathname where facets data lives
 # path_facets_loc <- '/Users/fongc2/Desktop/luna_transfer/facets_0.5.14/'
 path_facets_loc <- '/ifs/res/taylorlab/impact_facets/facets_0.5.14/'
-path_facets_orig_path <- '/ifs/res/taylorlab/impact_facets/facets_0.5.14/'
+
+# Pathname where results tables are written to
+# path_destination <- '/Users/fongc2/Documents/github/MSK/facets-suite/'
 path_destination <- '/home/fongc2/github/facets-suite/'
-# path_facets_loc <- '/ifs/res/taylorlab/impact_facets/facets_0.5.14/all/P-00342/P-0034223-T01-IM6_P-0034223-N01-IM6/default/'
+
+# Pathname where facets data lives on Luna -- use for string replace
+path_facets_orig_path <- '/ifs/res/taylorlab/impact_facets/facets_0.5.14/'
+
+# Folder names within facets folder
 path_facets_loc_all <- 'all'
 path_facets_loc_manifests <- 'manifests'
-fname_loc = 'impact_facets_manifest_2019_04_21.txt'
+fname_loc = 'impact_facets_manifest_2019_05_12.txt'
 
 # Load manifest file
 filenamePath <- file.path(path_facets_loc, path_facets_loc_manifests, fname_loc)
@@ -50,13 +59,16 @@ df_facets_output <- df_facets_loc[ , cols_facets]
 
 # p <- '/Users/fongc2/Desktop/luna_transfer/all/P-00342/P-0034223-T01-IM6_P-0034223-N01-IM6/default/P-0034223-T01-IM6_P-0034223-N01-IM6_purity.Rdata'
 # load(p)
-cols_cb <- c('genome_doubled', 'fraction_cna', 'genome_doubled_bn_algo', 'fraction_cna_bn_algo', 'loglik', 'purity', 'ploidy', 'dipLogR', 'timestamp')
+cols_cb <- c('genome_doubled_CB', 'fraction_cna_CB', 'loglik', 'purity', 'ploidy', 'dipLogR', 'timestamp')
 cols_bn_chr <- c('Chr1', 'Chr2', 'Chr3', 'Chr4', 'Chr5', 'Chr6', 'Chr7', 'Chr8', 'Chr9', 'Chr10', 'Chr11',  'Chr12', 
                  'Chr13', 'Chr14', 'Chr15', 'Chr16', 'Chr17', 'Chr18', 'Chr19', 'Chr20', 'Chr21', 'Chr22', 'Chr23')
-cols_bn_fga <- c('FGA', 'GAIN', 'LOSS', 'LOH', 'IS_WGD', 'EM_FLAGS')
+cols_bn_fga <- c('FGA', 'GAIN', 'LOSS', 'LOH', 'IS_WGD')
 cols_output <- c(cols_cb, cols_bn_fga, cols_bn_chr)
 
 df_facets_output[cols_output] <- NA
+# Add EM Flags column
+df_facets_output$EM_FLAGS <- ''
+head(df_facets_output)
 
 # Compute Fraction CNA
 print('Calculating Fraction of Genome Altered')
@@ -117,16 +129,20 @@ for (k in 1:2) {
       # Place into df
       gd <- facets_cna$genome_doubled
       fga <- facets_cna$fraction_cna
-      df_facets_output_current[i, 'genome_doubled'] <- gd
-      df_facets_output_current[i, 'fraction_cna'] <- fga
+      df_facets_output_current[i, 'genome_doubled_CB'] <- gd
+      df_facets_output_current[i, 'fraction_cna_CB'] <- fga
       
       # Compute CNA via PJ/CG's FGA script
       fga_output <- get_FGA_BN(fit = fit, out = out)
       chr_output <- get_FChrA(fit = fit, out = out)
   
       # Place into df
-      cols_bn_fga_current <- intersect(colnames(fga_output), colnames(df_facets_output_current))
+      cols_bn_fga_current <- intersect(colnames(fga_output), cols_bn_fga)
       cols_bn_chr_current <- intersect(colnames(chr_output), colnames(df_facets_output_current))
+      if("EM_FLAGS" %in% colnames(fga_output)) {
+        em_flags <- fga_output$EM_FLAGS
+        df_facets_output_current[i, 'EM_FLAGS'] <- as.character(em_flags)
+      }
       df_facets_output_current[i, cols_bn_fga_current] <- fga_output[ , cols_bn_fga_current]
       df_facets_output_current[i, cols_bn_chr_current] <- chr_output[ , cols_bn_chr_current]
       
